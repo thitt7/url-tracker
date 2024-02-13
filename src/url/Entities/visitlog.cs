@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace URLService.Entities;
 
-[Table("Logs")]
+[Table("VisitLogs")]
 
 public class VisitLog {
     public Guid Id {get; set;}

@@ -18,7 +18,9 @@ public class MappingProfiles: Profile
         // CreateMap<URL, AuctionUpdated>().IncludeMembers(a => a.VisitLogs);
         // CreateMap<VisitLog, AuctionUpdated>();
 
-        CreateMap<URL, UrlDto>().IncludeMembers(x => x.VisitLogs);
+        // CreateMap<URL, UrlDto>().IncludeMembers(x => x.VisitLogs);
+        CreateMap<URL, UrlDto>()
+            .ForMember(dest => dest.VisitLogs, opt => opt.MapFrom(src => src.VisitLogs));
         CreateMap<VisitLog, VisitLogDto>();
         CreateMap<CreateUrlDto, URL>(); // Mapping from CreateUrlDto to URL entity
 

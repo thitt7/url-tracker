@@ -19,6 +19,7 @@ namespace url.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    TrackingId = table.Column<string>(type: "longtext", nullable: true),
                     OriginalURL = table.Column<string>(type: "longtext", nullable: true),
                     TrackingURL = table.Column<string>(type: "longtext", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -31,7 +32,7 @@ namespace url.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Logs",
+                name: "VisitLogs",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
@@ -49,9 +50,9 @@ namespace url.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Logs", x => x.Id);
+                    table.PrimaryKey("PK_VisitLogs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Logs_URLs_URLId",
+                        name: "FK_VisitLogs_URLs_URLId",
                         column: x => x.URLId,
                         principalTable: "URLs",
                         principalColumn: "Id");
@@ -59,8 +60,8 @@ namespace url.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Logs_URLId",
-                table: "Logs",
+                name: "IX_VisitLogs_URLId",
+                table: "VisitLogs",
                 column: "URLId");
         }
 
@@ -68,7 +69,7 @@ namespace url.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Logs");
+                name: "VisitLogs");
 
             migrationBuilder.DropTable(
                 name: "URLs");

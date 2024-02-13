@@ -31,6 +31,9 @@ namespace url.Data.Migrations
                     b.Property<string>("OriginalURL")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("TrackingId")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("TrackingURL")
                         .HasColumnType("longtext");
 
@@ -85,7 +88,7 @@ namespace url.Data.Migrations
 
                     b.HasIndex("URLId");
 
-                    b.ToTable("Logs");
+                    b.ToTable("VisitLogs");
                 });
 
             modelBuilder.Entity("URLService.Entities.VisitLog", b =>

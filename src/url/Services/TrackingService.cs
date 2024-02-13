@@ -4,10 +4,10 @@ namespace URLService.Services;
 
 public class TrackingService
 {
-    private readonly UrlDbContext context;
-    public TrackingService(UrlDbContext _context)
+    private readonly UrlDbContext _context;
+    public TrackingService(UrlDbContext context)
     {
-        context = _context;
+        _context = context;
     }
 
     public string GenerateUniqueTrackingId()
@@ -23,6 +23,6 @@ public class TrackingService
 
     public bool TrackingIdExists(string trackingId)
     {
-        return context.URLs.Any(u => u.TrackingURL == trackingId);
+        return _context.URLs.Any(u => u.TrackingURL == trackingId);
     }
 }

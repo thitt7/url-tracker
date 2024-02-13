@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using URLService.Data;
+using URLService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<UrlDbContext>(opt => {
     opt.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+// Add TrackingService to the services collection
+// builder.Services.AddScoped<TrackingService>(); 
 
 var app = builder.Build();
 

@@ -26,6 +26,7 @@ public class DbInitializer
                 new URL
                 {
                     OriginalURL = "https://example.com/page1",
+                    TrackingId = "examplepath1",
                     TrackingURL = "https://yourtrackingurl.com/abc123",
                     CreatedAt = DateTime.UtcNow,
                     VisitLogs = new List<VisitLog>
@@ -61,6 +62,7 @@ public class DbInitializer
                 new URL
                 {
                     OriginalURL = "https://example.com/page2",
+                    TrackingId = "examplepath2",
                     TrackingURL = "https://yourtrackingurl.com/xyz789",
                     CreatedAt = DateTime.UtcNow,
                     VisitLogs = new List<VisitLog>

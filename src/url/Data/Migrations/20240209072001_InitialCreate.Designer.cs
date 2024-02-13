@@ -11,7 +11,7 @@ using URLService.Data;
 namespace url.Data.Migrations
 {
     [DbContext(typeof(UrlDbContext))]
-    [Migration("20240128074907_InitialCreate")]
+    [Migration("20240209072001_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -32,6 +32,9 @@ namespace url.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("OriginalURL")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TrackingId")
                         .HasColumnType("longtext");
 
                     b.Property<string>("TrackingURL")
@@ -88,7 +91,7 @@ namespace url.Data.Migrations
 
                     b.HasIndex("URLId");
 
-                    b.ToTable("Logs");
+                    b.ToTable("VisitLogs");
                 });
 
             modelBuilder.Entity("URLService.Entities.VisitLog", b =>

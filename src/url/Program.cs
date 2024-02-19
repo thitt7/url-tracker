@@ -12,7 +12,7 @@ builder.Services.AddDbContext<UrlDbContext>(opt => {
 });
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Add TrackingService to the services collection
-// builder.Services.AddScoped<TrackingService>(); 
+builder.Services.AddScoped<TrackingService>();
 
 var app = builder.Build();
 

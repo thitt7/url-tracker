@@ -7,9 +7,24 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PW}
       MYSQL_DATABASE: ${DB_NAME}
     ports:
-      - 5432:3306
+      - 3306:3306
     volumes:
       - mysql-data:/var/lib/mysql
     restart: always
+
+  dotnet:
+    build:
+      context: .
+      dockerfile: src/url/Dockerfile  # Path to the Dockerfile for the .NET application
+    ports:
+      - "80:80"  # Expose port 80 of the .NET application
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: ${DB_USER}  # Use the same DB user as defined for MySQL
+      MYSQL_PASSWORD: ${DB_PW}  # Use the same DB password as defined for MySQL
+      MYSQL_DATABASE: ${DB_NAME}  # Use the same DB name as defined for MySQL
+
 volumes:
   mysql-data:

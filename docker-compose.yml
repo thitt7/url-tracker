@@ -13,18 +13,18 @@ services:
     restart: always
 
   dotnet:
+    image: dotnet-runtime:latest
     build:
       context: .
-      dockerfile: src/url/Dockerfile  # Path to the Dockerfile for the .NET application
+      dockerfile: src/url/Dockerfile
     ports:
-      - "80:80"  # Expose port 80 of the .NET application
+      - 8001:80
     depends_on:
       - mysql
     environment:
-      MYSQL_HOST: mysql
-      MYSQL_USER: ${DB_USER}  # Use the same DB user as defined for MySQL
-      MYSQL_PASSWORD: ${DB_PW}  # Use the same DB password as defined for MySQL
-      MYSQL_DATABASE: ${DB_NAME}  # Use the same DB name as defined for MySQL
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      ConnectionStrings__DefaultConnection: Server=mysql;Port=3306;Database=${DB_NAME};User=${DB_USER};Password=${DB_PW}
 
 volumes:
   mysql-data:

@@ -13,7 +13,7 @@ RUN dotnet restore url-tracker.sln
 COPY src/url src/url
 WORKDIR /app/src/url
 RUN dotnet publish -c Release -o /app/src/out
-
+ 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app

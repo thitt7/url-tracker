@@ -9,7 +9,8 @@ COPY src/url/url.csproj src/url/url.csproj
 # Restore package deps
 RUN dotnet restore url-tracker.sln
 
-# Copy the app folders over
+# Copy app folders and .env
+COPY .env ./.env
 COPY src/url src/url
 WORKDIR /app/src/url
 RUN dotnet publish -c Release -o /app/src/out
@@ -18,4 +19,8 @@ RUN dotnet publish -c Release -o /app/src/out
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/src/out .
+COPY --from=build /app/.env .
 ENTRYPOINT [ "dotnet", "url.dll" ]
+
+# Set DOCKER environment variable
+ENV DOCKER_ENV=true

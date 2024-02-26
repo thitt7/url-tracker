@@ -1,21 +1,22 @@
 'use client';
 
-import createUrl from './actions';
+// import createUrl from './actions';
 // import Recaptcha from '../components/recaptcha';
 import React, {useState} from 'react';
+import { redirect } from 'next/navigation';
 import TextField from '@mui/material/TextField';
 // import FormControl from '@mui/material/FormControl';
 // import FormGroup from '@mui/material/FormGroup';
 // import FormControlLabel from '@mui/material/FormControlLabel';
 import { Button, Checkbox } from '@mui/material';
 
-type createUrl = {
+type createUrlDTO = {
   originalURL: string;
 }
 
 const CreateUrlForm = () => {
 
-  const [formData, setformData] = useState<createUrl>();
+  const [formData, setformData] = useState<createUrlDTO>();
   const [helperText, setHelperText] = useState('*You must enter your email and at least one preference');
   const [isVerified, setIsVerified] = useState(true);
   const [isUrl, setIsUrl] = useState(false);
@@ -36,6 +37,50 @@ const CreateUrlForm = () => {
     }
     else {setIsUrl(false)};
 
+  };
+
+  async function createUrl(formData: FormData) {
+    console.log('inside createUrl...')
+
+    let createUrl: createUrlDTO | undefined;
+
+    for (const [key, value] of formData.entries()) {
+      if (key === 'url') {
+        createUrl = {originalURL: value as string}
+      }
+      
+    }
+
+    createUrl !== undefined || null ? console.log('createURL: ', createUrl) : '';
+
+    // const res = await fetch(`http:localhost:8001/api/urls`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(createUrl)
+    // });
+
+    const res = await fetch('http://localhost:8001/api/urls');
+    // const response = await res.json()
+    console.log('API RES: ', res)
+
+    // const res = await fetch('http://localhost:8001/api/urls');
+    // const response = await res.json();
+    // console.log('API RES: ', response);
+
+
+    // redirect(`/track/${response.trackingId}`)
+
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    console.log('EVENT: ', event)
+    // if (formData) {
+    //   await createUrl(formData);
+    // }
   };
 
   // const setVerified = (verified: boolean): void => { setIsVerified(verified) }

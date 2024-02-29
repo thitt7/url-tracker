@@ -21,8 +21,6 @@ const CreateUrlForm = () => {
   const [isVerified, setIsVerified] = useState(true);
   const [isUrl, setIsUrl] = useState(false);
 
-  // const { email, alerts, news, events } = formData;
-  // const error = !(([alerts, news, events].filter((v) => v).length > 0) && email);
   const disabledProp = {disabled: isUrl && isVerified ? false : true};
 
   function isValidURL(url: string) {
@@ -53,24 +51,21 @@ const CreateUrlForm = () => {
 
     createUrl !== undefined || null ? console.log('createURL: ', createUrl) : '';
 
-    // const res = await fetch(`http:localhost:8001/api/urls`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(createUrl)
-    // });
-
-    const res = await fetch('http://localhost:8001/api/urls');
-    // const response = await res.json()
-    console.log('API RES: ', res)
+    const res = await fetch(`http://localhost:8001/api/urls`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(createUrl)
+    });
+    const response = await res.json()
+    console.log('API RES: ', response)
 
     // const res = await fetch('http://localhost:8001/api/urls');
-    // const response = await res.json();
-    // console.log('API RES: ', response);
+    // const response = await res.json()
+    // console.log('API RES: ', response)
 
-
-    // redirect(`/track/${response.trackingId}`)
+    redirect(`/track/${response.trackingId}`)
 
   }
 

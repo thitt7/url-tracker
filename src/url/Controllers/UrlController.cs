@@ -34,11 +34,12 @@ public class UrlController: ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<UrlDto>> GetUrlById(Guid id)
+    public async Task<ActionResult<UrlDto>> GetUrlById(string id)
     {
+        Console.WriteLine($"ID PARSED: {id}");
         var url = await _context.URLs
             .Include(url => url.VisitLogs)
-            .FirstOrDefaultAsync(url => url.Id == id);
+            .FirstOrDefaultAsync(url => url.TrackingId == id);
 
         return _mapper.Map<UrlDto>(url);
     }

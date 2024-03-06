@@ -5,6 +5,7 @@ An application that acts as a URL shortener and tracker. It takes a URL as input
 
 ## Built With
 
+- Docker
 - C#/.NET
 - Entity Framework
 - Node.js

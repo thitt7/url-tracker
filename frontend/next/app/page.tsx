@@ -4,7 +4,7 @@ import CreateUrlForm from "./components/home/createUrl";
 export default function Home() {
   return (
     <main className="">
-      <CreateUrlForm></CreateUrlForm>
+      <CreateUrlForm />
     </main>
   );
 }

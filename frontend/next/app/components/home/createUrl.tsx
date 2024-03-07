@@ -61,22 +61,9 @@ const CreateUrlForm = () => {
     const response = await res.json()
     console.log('API RES: ', response)
 
-    // const res = await fetch('http://localhost:8001/api/urls');
-    // const response = await res.json()
-    // console.log('API RES: ', response)
-
     redirect(`/track/${response.trackingId}`)
 
   }
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-
-    console.log('EVENT: ', event)
-    // if (formData) {
-    //   await createUrl(formData);
-    // }
-  };
 
   // const setVerified = (verified: boolean): void => { setIsVerified(verified) }
 

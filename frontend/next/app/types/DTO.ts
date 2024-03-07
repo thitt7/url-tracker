@@ -3,7 +3,7 @@ export type UrlDto = {
     trackingId: string;
     originalURL: string;
     trackingURL: string;
-    createdAt: Date | string;
+    createdAt: string;
     visitLogs: VisitLogDto[];
 }
 
@@ -24,7 +24,7 @@ export type IpData = {
 
 export type VisitLogDto = IpData & {
     // id: string;
-    CreatedAt: Date | string;
+    CreatedAt: string;
     UserAgent?: string;
     IPAddress?: string;
 }

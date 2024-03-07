@@ -6,6 +6,7 @@ import { NextRequest, NextResponse, userAgent } from 'next/server'
 import getUrl from '@lib/getUrl';
 import getMetaData from '@lib/getMetaData';
 import getIpData from '@lib/getIpData';
+import Redirect from './redirect';
 import parse, { HTMLReactParserOptions, Element } from 'html-react-parser';
 import { VisitLogDto, UrlDto } from '@Types/DTO';
 
@@ -14,22 +15,17 @@ export const metadata: Metadata = {
   description: "",
 };
 
-const options: HTMLReactParserOptions = {
-  replace(domNode) {
-    // console.log('NODE: ', domNode)
-    if ((domNode as Element).attribs) {
-      // ...
-    }
-  },
-};
-
-const google = "<meta content='Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for.' name='description'><meta content='noodp' name='robots'><meta content='text/html; charset=UTF-8' http-equiv='Content-Type'><meta content='/images/branding/googleg/1x/googleg_standard_color_128dp.png' itemprop='image'><title>Google</title>"
-const exHTMLString = <p></p>
+// const options: HTMLReactParserOptions = {
+//   replace(domNode) {
+//     if ((domNode as Element).attribs) {}
+//   },
+// };
 
 const OriginalUrl = async ({ params }: { params: { id: string } }) => {
   const {id: trackingId} = params;
   const url: UrlDto = await getUrl(trackingId);
   const {originalURL} = url;
+  console.log('URL: ', url)
 
   // console.log('OGURL: ', example)
   const headHTML = await getMetaData(originalURL);
@@ -43,22 +39,27 @@ const OriginalUrl = async ({ params }: { params: { id: string } }) => {
   console.log('LOG: ', Log)
 
   const addVisitLog = async (log: VisitLogDto) => {
-    const res = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_API_PORT}/api/urls/visit/${trackingId}`, {
+    console.log('adding visit log...')
+    try {
+      const res = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_API_PORT}/api/urls/visit/${trackingId}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(Log)
-      });
-      console.log('PUT RES: ', await res.json())
+      })
+      res.json();
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   addVisitLog(Log);
 
-  // return <>{parse(fullMeta)}</>
-  return <head>{parse(headHTML!, options)}</head>;
-
-  // redirect(originalURL);
+  return (
+    <>
+      <head>{parse(headHTML!)}</head>
+      <Redirect originalUrl={originalURL}/>
+    </>
+  )
 
 }
 

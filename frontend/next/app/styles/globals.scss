@@ -1,0 +1,60 @@
+@use 'variables' as *;
+
+// @font-face {
+//   font-family: 'ms_sans_serif';
+//      src: url('../../fonts/ms_sans_serif.woff2') format('woff2');
+//      font-weight: 400;
+//      font-style: normal
+// }
+// @font-face {
+//        font-family: 'ms_sans_serif';
+//        src: url('../../fonts/ms_sans_serif_bold.woff2') format('woff2');
+//        font-weight: bold;
+//        font-style: normal
+// }
+
+* {
+  // font-family: 'ms_sans_serif';
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  word-spacing: 2px;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+[disabled], [data-disabled] {
+  pointer-events: none;
+
+  &, * {color: $text-disabled;}
+
+  span[class*=close] {
+    &::before, &::after {background-color: $border-primary !important;}
+  }
+}
+
+*:focus {
+  outline: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+} 

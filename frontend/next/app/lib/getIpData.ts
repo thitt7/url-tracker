@@ -7,20 +7,18 @@ const getIpData = async (ip: string): Promise<IpData | null> => {
   
   console.log('IP DATA: ', data)
 
-  // console.log()
   if (!Object.entries(data).length) {
-    console.log('ALLOOO')
-    return null
+    return null;
   }
 
   const IpData: IpData = {
-    Continent: data.continent,
-    Country: data.country,
-    Region: data.region,
-    City: data.city,
-    ISP: data.isp,
+    continent: data.continent,
+    country: data.country,
+    region: data.region,
+    city: data.city,
+    isp: data.isp,
     // Coordinates?: string;
-    Org: data.org
+    org: data.org
   }
   return IpData;
 }

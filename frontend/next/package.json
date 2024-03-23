@@ -11,7 +11,9 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.12",
     "@mui/material": "^5.15.10",
+    "@mui/x-data-grid": "^6.19.6",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.4.5",
     "html-react-parser": "^5.1.8",

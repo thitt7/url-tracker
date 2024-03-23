@@ -27,7 +27,6 @@ const OriginalUrl = async ({ params }: { params: { id: string } }) => {
   const {originalURL} = url;
   console.log('URL: ', url)
 
-  // console.log('OGURL: ', example)
   const headHTML = await getMetaData(originalURL);
 
   const header = headers();
@@ -35,7 +34,7 @@ const OriginalUrl = async ({ params }: { params: { id: string } }) => {
   const ip = (header.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0];
 
   const IpData = await getIpData(ip);
-  const Log: VisitLogDto = {...IpData, CreatedAt: new Date().toISOString(), UserAgent: userAgent, IPAddress: ip};
+  const Log: VisitLogDto = {...IpData, createdAt: new Date().toISOString(), userAgent: userAgent, ipAddress: ip};
   console.log('LOG: ', Log)
 
   const addVisitLog = async (log: VisitLogDto) => {

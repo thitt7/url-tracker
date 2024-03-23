@@ -36,7 +36,6 @@ public class UrlController: ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<UrlDto>> GetUrlById(string id)
     {
-        Console.WriteLine($"ID PARSED: {id}");
         var url = await _context.URLs
             .Include(url => url.VisitLogs)
             .FirstOrDefaultAsync(url => url.TrackingId == id);
@@ -46,12 +45,14 @@ public class UrlController: ControllerBase
     [HttpPost]
     public async Task<ActionResult<UrlDto>> CreateUrl(CreateUrlDto urlDto)
     {
+        string DOMAIN = Environment.GetEnvironmentVariable("DOMAIN");
+
         var url = _mapper.Map<URL>(urlDto);
         
         var newTrackingId = _trackingService.GenerateUniqueTrackingId();
 
         url.TrackingId = newTrackingId;
-        url.TrackingURL = $"https://exampledomain/track/{newTrackingId}";
+        url.TrackingURL = $"https://{DOMAIN}/track/{newTrackingId}";
 
         _context.URLs.Add(url);
 
@@ -62,22 +63,31 @@ public class UrlController: ControllerBase
         return CreatedAtAction(nameof(GetUrlById), new {url.Id}, _mapper.Map<UrlDto>(url));
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateUrl(Guid id, UpdateUrlDto updateUrlDto)
+    [HttpPut("{trackingId}")]
+    public async Task<ActionResult> UpdateUrl(string trackingId, UpdateUrlDto updateUrlDto)
     {
+        string DOMAIN = Environment.GetEnvironmentVariable("DOMAIN");
+
         var url = await _context.URLs
             .Include(url => url.VisitLogs)
-            .FirstOrDefaultAsync(url => url.Id == id);
+            .FirstOrDefaultAsync(url => url.TrackingId == trackingId);
 
         if (url == null) return NotFound();
+
+        if (!string.IsNullOrEmpty(updateUrlDto.TrackingId))
+        {
+            var idExists = _trackingService.TrackingIdExists(updateUrlDto.TrackingId);
+            if (idExists) {return Conflict();}
+            url.TrackingURL = $"https://{DOMAIN}/track/{updateUrlDto.TrackingId}";
+        }
 
         url.TrackingId = updateUrlDto.TrackingId ?? url.TrackingId;
         url.OriginalURL = updateUrlDto.OriginalURL ?? url.OriginalURL;
 
         var result = await _context.SaveChangesAsync() > 0;
 
-        if (result) return Ok();
+        if (!result) return BadRequest("could not save changes to db");
 
-        return BadRequest("could not update url");
+        return Ok(_mapper.Map<UrlDto>(url));
     }
 }

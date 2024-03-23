@@ -1,22 +1,14 @@
 'use client';
 
-// import createUrl from './actions';
-// import Recaptcha from '../components/recaptcha';
 import React, {useState} from 'react';
 import { redirect } from 'next/navigation';
 import TextField from '@mui/material/TextField';
-// import FormControl from '@mui/material/FormControl';
-// import FormGroup from '@mui/material/FormGroup';
-// import FormControlLabel from '@mui/material/FormControlLabel';
 import { Button, Checkbox } from '@mui/material';
-
-type createUrlDTO = {
-  originalURL: string;
-}
+import {createUrlDto} from '@Types/DTO'
 
 const CreateUrlForm = () => {
 
-  const [formData, setformData] = useState<createUrlDTO>();
+  const [formData, setformData] = useState<createUrlDto>();
   const [helperText, setHelperText] = useState('*You must enter your email and at least one preference');
   const [isVerified, setIsVerified] = useState(true);
   const [isUrl, setIsUrl] = useState(false);
@@ -38,9 +30,7 @@ const CreateUrlForm = () => {
   };
 
   async function createUrl(formData: FormData) {
-    console.log('inside createUrl...')
-
-    let createUrl: createUrlDTO | undefined;
+    let createUrl: createUrlDto | undefined;
 
     for (const [key, value] of formData.entries()) {
       if (key === 'url') {

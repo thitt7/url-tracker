@@ -23,6 +23,6 @@ public class TrackingService
 
     public bool TrackingIdExists(string trackingId)
     {
-        return _context.URLs.Any(u => u.TrackingURL == trackingId);
+        return _context.URLs.Any(u => u.TrackingId == trackingId);
     }
 }

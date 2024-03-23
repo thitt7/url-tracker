@@ -49,12 +49,25 @@ a {
   }
 }
 
+/* Global MUI Styles */
+[class*=MuiDataGrid-columnHeaders] {display: none;}
+[class*=MuiDataGrid-cell] {
+  width: 100% !important;
+  max-width: initial !important;
+  
+  &:first-of-type {width: 250px !important;}
+
+  &:nth-of-type(n+3) {display: none;}
+}
+
+.MuiDataGrid-row {width: 100% !important;}
+
 *:focus {
   outline: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-} 
+// @media (prefers-color-scheme: dark) {
+//   html {
+//     color-scheme: dark;
+//   }
+// } 

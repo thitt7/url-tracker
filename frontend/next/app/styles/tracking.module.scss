@@ -14,11 +14,28 @@
         padding: 10px;
 
         .table {
-            display: initial;
+            box-sizing: border-box;
+
+            td {
+                width: 100%;
+
+                &:first-of-type {
+                    font: bold 1rem/1 $font-primary;
+                    width: 250px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+            }
         }
     }
 
     .logs {
         padding: 10px;
+
+        th {
+            font: bold 1rem/1 $font-primary;
+            text-align: center;
+        }
     }
 }

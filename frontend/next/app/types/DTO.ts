@@ -7,24 +7,28 @@ export type UrlDto = {
     visitLogs: VisitLogDto[];
 }
 
+export type createUrlDto = {
+    originalURL: string;
+  }
+
 export type UpdateUrlDto = {
     trackingId?: string;
     originalURL?: string;
 }
 
 export type IpData = {
-    Continent?: string;
-    Country?: string;
-    Region?: string;
-    City?: string;
-    ISP?: string;
-    Coordinates?: string;
-    Org?: string;
+    continent?: string;
+    country?: string;
+    region?: string;
+    city?: string;
+    isp?: string;
+    coordinates?: string;
+    org?: string;
 }
 
 export type VisitLogDto = IpData & {
     // id: string;
-    CreatedAt: string;
-    UserAgent?: string;
-    IPAddress?: string;
+    createdAt: string;
+    userAgent?: string;
+    ipAddress?: string;
 }

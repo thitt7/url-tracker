@@ -14,6 +14,8 @@ services:
 
   dotnet:
     image: dotnet:latest
+    env_file:
+      - .env
     build:
       context: .
       dockerfile: src/url/Dockerfile

@@ -7,6 +7,8 @@ import VisitLogTable from './VisitLogTable';
 import getUrl from '@lib/getUrl';
 import styles from '@styles/tracking.module.scss';
 
+const IS_DOCKER = process.env.DOCKER_ENV === 'true';
+
 const TrackingPage = async ({ params }: { params: { id: string } }) => {
   const { id: trackingId } = params;
   const url = await getUrl(trackingId);
@@ -18,7 +20,7 @@ const TrackingPage = async ({ params }: { params: { id: string } }) => {
       <h1>Track Your Link</h1>
       <div className={styles.link}>
         <h2>Your Link Information</h2>
-        <LinkInfoTable url={url} />
+        <LinkInfoTable url={url} docker={IS_DOCKER}/>
       </div>
       <div className={styles.logs}>
         <h2>Visit Logs</h2>

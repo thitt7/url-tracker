@@ -3,6 +3,7 @@ using URLService.Data;
 using URLService.Services;
 using dotenv.net;
 using dotenv.net.Utilities;
+using Polly;
 
 Console.WriteLine("-------PROGRAM FILE-------");
 
@@ -39,7 +40,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy  =>
                       {
-                          policy.WithOrigins($"http://localhost:{PORT}", $"https://{DOMAIN}:{PORT}")
+                          policy.WithOrigins($"http://next:{PORT}", $"http://localhost:{PORT}", $"https://{DOMAIN}:{PORT}")
                                             .AllowAnyHeader()
                                             .AllowAnyMethod();
                                             // .AllowAnyOrigin();
@@ -73,13 +74,19 @@ app.MapControllers();
 // // Call the LogConnectionString method
 // connectionDebug.LogConnectionString();
 
-try
-{
-    DbInitializer.InitDb(app);
-}
-catch (Exception e)
-{
-    Console.WriteLine(e);
-}
+var retryPolicy = Policy
+    .Handle<DbUpdateException>().Or<Exception>()
+    .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(10));
+
+retryPolicy.ExecuteAndCapture(() => DbInitializer.InitDb(app));
+
+// try
+// {
+//     DbInitializer.InitDb(app);
+// }
+// catch (Exception e)
+// {
+//     Console.WriteLine(e);
+// }
 
 app.Run();

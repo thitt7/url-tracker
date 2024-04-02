@@ -13,18 +13,31 @@ services:
     restart: always
 
   dotnet:
-    image: dotnet-runtime:latest
+    image: dotnet:latest
     build:
       context: .
       dockerfile: src/url/Dockerfile
     ports:
-      - 8001:80
+      - 8001:8001
     depends_on:
       - mysql
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://+:80
+      ASPNETCORE_URLS: http://+:8001
       ConnectionStrings__DefaultConnection: Server=mysql;Port=3306;Database=${DB_NAME};User=${DB_USER};Password=${DB_PW}
+
+  next:
+    image: next:latest
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: frontend/next/Dockerfile
+    ports:
+      - 4000:4000
+    volumes:
+      - /var/lib/next/data
+    restart: always
 
 volumes:
   mysql-data:

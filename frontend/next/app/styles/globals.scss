@@ -50,17 +50,34 @@ a {
 }
 
 /* Global MUI Styles */
-[class*=MuiDataGrid-columnHeaders] {display: none;}
-[class*=MuiDataGrid-cell] {
-  width: 100% !important;
-  max-width: initial !important;
-  
-  &:first-of-type {width: 250px !important;}
-
-  &:nth-of-type(n+3) {display: none;}
+.MuiDataGrid-virtualScroller {
+  [role=rowgroup] {width: 100%;}
 }
+[class*=MuiDataGrid-columnHeaders] {display: none !important;}
 
-.MuiDataGrid-row {width: 100% !important;}
+.MuiDataGrid-row {
+  width: 100% !important;
+
+  > div:nth-child(3) {display: none;}
+
+  [class*=MuiDataGrid-cell] {
+    width: 100% !important;
+    max-width: initial !important;
+
+    &:first-of-type {
+      @media (min-width: $tablet) {
+        min-width: 200px !important;
+      }    
+      width: 200px !important;
+
+      [class*=cellContent] {font-weight: bold;}
+    }
+
+    [class*=cellContent] {width: initial !important;}
+  
+    &:nth-of-type(n+3) {display: none;}
+  }
+}
 
 *:focus {
   outline: none;

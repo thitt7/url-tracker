@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import { Button, Checkbox } from '@mui/material';
 import {createUrlDto} from '@Types/DTO'
 
-const CreateUrlForm = () => {
+const CreateUrlForm = ({docker}: {docker: boolean}) => {
 
   const [formData, setformData] = useState<createUrlDto>();
   const [helperText, setHelperText] = useState('*You must enter your email and at least one preference');
@@ -31,17 +31,22 @@ const CreateUrlForm = () => {
 
   async function createUrl(formData: FormData) {
     let createUrl: createUrlDto | undefined;
+    /* set API url for local dev vs in docker container */
+    console.log('DOCKER ENV: ', docker)
+    let URL: string;
+    // if (docker) {URL = `http://dotnet:${process.env.NEXT_PUBLIC_API_PORT}/api/urls`}
+    // else {URL = `http://localhost:${process.env.NEXT_PUBLIC_API_PORT}/api/urls`}
+    URL = `http://localhost:8001/api/urls`;
 
     for (const [key, value] of formData.entries()) {
       if (key === 'url') {
         createUrl = {originalURL: value as string}
       }
-      
     }
 
     createUrl !== undefined || null ? console.log('createURL: ', createUrl) : '';
 
-    const res = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_API_PORT}/api/urls`, {
+    const res = await fetch(URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

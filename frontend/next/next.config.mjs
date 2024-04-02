@@ -1,10 +1,11 @@
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    output: 'standalone'
+};
 
 export default nextConfig;
 
 // Load environment variables from .env file
-// require('dotenv').config({ path: '../../.env' });
-dotenv.config({ path: '../../.env' });
+// dotenv.config({ path: '../../.env' });

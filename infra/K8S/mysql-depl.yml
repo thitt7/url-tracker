@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        imagePullPolicy: Never
+        env:
+          - name: MYSQL_ROOT_USER
+            valueFrom:
+              secretKeyRef:
+                name: env-secrets
+                key: MYSQL_ROOT_USER
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: env-secrets
+                key: MYSQL_ROOT_PASSWORD
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: env-secrets
+                key: MYSQL_DATABASE
+        ports:
+        - containerPort: 3306
+        volumeMounts: 
+        - mountPath: /var/data/mysql
+          name: mysqldata
+      volumes:
+        - name: mysqldata
+          persistentVolumeClaim:
+            claimName: mysql-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306

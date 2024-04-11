@@ -3,9 +3,9 @@ services:
     image: mysql:8.0
     container_name: ${DB_CONTAINER_NAME}
     environment:
-      MYSQL_ROOT_USER: ${DB_USER}
-      MYSQL_ROOT_PASSWORD: ${DB_PW}
-      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_USER: $MYSQL_ROOT_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - 3306:3306
     volumes:
@@ -26,7 +26,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8001
-      ConnectionStrings__DefaultConnection: Server=mysql;Port=3306;Database=${DB_NAME};User=${DB_USER};Password=${DB_PW}
+      ConnectionStrings__DefaultConnection: Server=mysql;Port=3306;Database=${MYSQL_DATABASE};User=${MYSQL_ROOT_USER};Password=${MYSQL_ROOT_PASSWORD}
 
   next:
     image: next:latest

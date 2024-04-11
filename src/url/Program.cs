@@ -5,13 +5,13 @@ using dotenv.net;
 using dotenv.net.Utilities;
 using Polly;
 
-Console.WriteLine("-------PROGRAM FILE-------");
+Console.WriteLine("-------PROGRAM FILE UPDATED-------");
 
 string dockerEnv = Environment.GetEnvironmentVariable("DOCKER_ENV");
 string DOMAIN = null;
 string PORT = null;
-string DB_NAME= null;
-string DB_PW = null;
+string MYSQL_DATABASE= null;
+string MYSQL_ROOT_PASSWORD = null;
 string connectionString = null;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -22,9 +22,9 @@ if (!string.IsNullOrEmpty(dockerEnv))
 else
 {
     DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] {"../../.env"}));
-    DB_NAME = EnvReader.GetStringValue("DB_NAME");
-    DB_PW = EnvReader.GetStringValue("DB_PW");
-    connectionString = $"Server=127.0.0.1;Port=3306;Database={DB_NAME};User=root;Password={DB_PW}";
+    MYSQL_DATABASE = EnvReader.GetStringValue("MYSQL_DATABASE");
+    MYSQL_ROOT_PASSWORD = EnvReader.GetStringValue("MYSQL_ROOT_PASSWORD");
+    connectionString = $"Server=127.0.0.1;Port=3306;Database={MYSQL_DATABASE};User=root;Password={MYSQL_ROOT_PASSWORD}";
     builder.Configuration["ConnectionStrings:DefaultConnection"] = connectionString;
 }
 
@@ -33,6 +33,12 @@ try {
     PORT = EnvReader.GetStringValue("NEXT_SERVER_PORT");
 }
 catch (Exception ex) {Console.WriteLine($"ERROR LOADING DOTENV: {ex.Message}");}
+
+// var environmentVariables = Environment.GetEnvironmentVariables();
+// foreach (System.Collections.DictionaryEntry entry in environmentVariables)
+// {
+//     Console.WriteLine($"{entry.Key} = {entry.Value}");
+// }
 
 /* Set CORS policy with allowed origins */
 builder.Services.AddCors(options =>
@@ -55,7 +61,7 @@ builder.Services.AddDbContext<UrlDbContext>(opt => {
 });
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<TrackingService>();
-// builder.Services.AddSingleton<ConnectionDebug>();
+builder.Services.AddSingleton<ConnectionDebug>();
 
 var app = builder.Build();
 
@@ -67,24 +73,22 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// // Get an instance of ConnectionDebug
-// var connectionDebug = app.Services.GetRequiredService<ConnectionDebug>();
-// // Call the LogConnectionString method
-// connectionDebug.LogConnectionString();
+// Get an instance of ConnectionDebug
+var connectionDebug = app.Services.GetRequiredService<ConnectionDebug>();
+// Call the LogConnectionString method
+connectionDebug.LogConnectionString();
 
 var retryPolicy = Policy
     .Handle<DbUpdateException>().Or<Exception>()
     .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(10));
 
-retryPolicy.ExecuteAndCapture(() => DbInitializer.InitDb(app));
-
-// try
-// {
-//     DbInitializer.InitDb(app);
-// }
-// catch (Exception e)
-// {
-//     Console.WriteLine(e);
-// }
+retryPolicy.ExecuteAndCapture(() => {
+    try
+    {
+        Console.WriteLine("TRYING INITDB...");
+        DbInitializer.InitDb(app);
+    }
+    catch (Exception e) { Console.WriteLine($"INITDB EXCEPTION: {e}"); }
+});
 
 app.Run();

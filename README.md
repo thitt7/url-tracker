@@ -6,6 +6,7 @@ An application that acts as a URL shortener and tracker. It takes a URL as input
 ## Built With
 
 - Docker
+- Kubernetes
 - C#/.NET
 - Entity Framework
 - Node.js
@@ -15,7 +16,6 @@ An application that acts as a URL shortener and tracker. It takes a URL as input
 - SCSS
 
 ## Future Updates
-
 
 ## Author
 

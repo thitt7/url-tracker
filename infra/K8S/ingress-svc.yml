@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-svc
+  labels:
+    name: ingress-svc
+spec:
+  ingressClassName: nginx
+  tls: 
+    - hosts:
+      - api.url-tracker.com
+      secretName: url-tracker-tls
+  rules:
+  - host: api.url-tracker.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: dotnet-clusterip
+            port: 
+              number: 8001

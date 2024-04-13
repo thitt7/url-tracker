@@ -13,8 +13,8 @@ spec:
     spec:
       containers:
       - name: next
-        image: next:latest
-        imagePullPolicy: Never
+        image: thitt7/next
+        imagePullPolicy: Always
         envFrom:
           - secretRef:
               name: env-secrets
@@ -36,11 +36,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: next-lb
+  name: next-nodeport
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: next
   ports:
   - port: 4000
     targetPort: 4000
+    nodePort: 30002

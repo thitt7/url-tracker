@@ -7,6 +7,10 @@ on:
     paths: 
     - 'src/url/**'
 
+env:
+  REGISTRY_IMAGE: thitt7/dotnet
+  DOCKERFILE: src/url/Dockerfile
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,6 +35,15 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: .
-        file: src/url/Dockerfile
+        file: ${{ env.DOCKERFILE }}
         push: true
-        tags: thitt7/dotnet:latest
+        tags: ${{ env.REGISTRY_IMAGE }}:latest
+
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save k8s-url-tracker
+    - name: Restart kubernetes deployment
+      run: kubectl rollout restart deployment dotnet

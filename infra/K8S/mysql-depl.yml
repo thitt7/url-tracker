@@ -14,7 +14,7 @@ spec:
       containers:
       - name: mysql
         image: mysql:8.0
-        imagePullPolicy: Never
+        imagePullPolicy: Always
         env:
           - name: MYSQL_ROOT_USER
             valueFrom:
@@ -56,11 +56,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-lb
+  name: mysql-nodeport
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: mysql
   ports:
   - port: 3306
     targetPort: 3306
+    nodePort: 30306

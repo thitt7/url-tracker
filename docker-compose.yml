@@ -1,3 +1,9 @@
+# networks:
+#   custom:
+#     ipam:
+#       config:
+#         - subnet: 10.5.0.0/16
+
 services:
   mysql:
     image: mysql:8.0
@@ -32,6 +38,9 @@ services:
     image: next:latest
     env_file:
       - .env
+    environment:
+      - VIRTUAL_HOST=api.url-tracker.com
+      - VIRTUAL_PORT=4000
     build:
       context: .
       dockerfile: frontend/next/Dockerfile
@@ -40,6 +49,17 @@ services:
     volumes:
       - /var/lib/next/data
     restart: always
+
+  # nginx-proxy:
+  #   image: nginxproxy/nginx-proxy
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   networks:
+  #     custom:
+  #   volumes:
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  #     - ./devcerts:/etc/nginx/certs
 
 volumes:
   mysql-data:

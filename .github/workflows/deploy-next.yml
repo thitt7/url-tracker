@@ -1,4 +1,4 @@
-name: deploy-dotnet
+name: deploy-next
 
 on:
   workflow_dispatch: 
@@ -6,6 +6,10 @@ on:
     branches: [ "main" ]
     paths: 
     - 'frontend/next/**'
+
+env:
+  REGISTRY_IMAGE: thitt7/next
+  DOCKERFILE: frontend/next/Dockerfile
 
 jobs:
   build:
@@ -31,6 +35,15 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: .
-        file: frontend/next/Dockerfile
+        file: ${{ env.DOCKERFILE }}
         push: true
-        tags: thitt7/next:latest
+        tags: ${{ env.REGISTRY_IMAGE }}:latest
+
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save k8s-url-tracker
+    - name: Restart kubernetes deployment
+      run: kubectl rollout restart deployment next

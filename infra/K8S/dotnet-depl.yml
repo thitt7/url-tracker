@@ -13,8 +13,8 @@ spec:
     spec:
       containers:
       - name: dotnet
-        image: dotnet:latest
-        imagePullPolicy: Never
+        image: thitt7/dotnet
+        imagePullPolicy: Always
         env:
           - name: ASPNETCORE_ENVIRONMENT
             value: "Development"
@@ -46,11 +46,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: dotnet-lb
+  name: dotnet-nodeport
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: dotnet
   ports:
   - port: 8001
     targetPort: 8001
+    nodePort: 30001

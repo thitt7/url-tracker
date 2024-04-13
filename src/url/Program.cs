@@ -85,7 +85,7 @@ var retryPolicy = Policy
 retryPolicy.ExecuteAndCapture(() => {
     try
     {
-        Console.WriteLine("TRYING INITDB...");
+        // Console.WriteLine("TRYING INITDB...");
         DbInitializer.InitDb(app);
     }
     catch (Exception e) { Console.WriteLine($"INITDB EXCEPTION: {e}"); }

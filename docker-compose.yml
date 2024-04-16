@@ -38,9 +38,9 @@ services:
     image: next:latest
     env_file:
       - .env
-    environment:
-      - VIRTUAL_HOST=api.url-tracker.com
-      - VIRTUAL_PORT=4000
+    # environment:
+    #   - VIRTUAL_HOST=api.url-tracker.com
+    #   - VIRTUAL_PORT=4000
     build:
       context: .
       dockerfile: frontend/next/Dockerfile

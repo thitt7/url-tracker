@@ -18,13 +18,13 @@ spec:
             port: 
               number: 8001
 
-  # - host: api.url-tracker.com
-  #   http:
-  #     paths:
-  #     - pathType: Prefix
-  #       path: "/"
-  #       backend:
-  #         service:
-  #           name: next-clusterip
-  #           port: 
-  #             number: 4000
+  - host: api.url-tracker.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: next-clusterip
+            port: 
+              number: 4000

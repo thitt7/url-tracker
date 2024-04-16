@@ -17,7 +17,6 @@ spec:
             name: dotnet-clusterip
             port: 
               number: 8001
-
   - host: api.url-tracker.com
     http:
       paths:

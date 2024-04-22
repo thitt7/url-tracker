@@ -23,7 +23,7 @@ spec:
             port: 
               number: 8001
 
-  - host: url-tracker.com
+  - host: app.url-tracker.com
     http:
       paths:
       - pathType: Prefix

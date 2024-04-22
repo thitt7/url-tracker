@@ -12,7 +12,7 @@ spec:
   #     - api.url-tracker.com
   #     secretName: url-tracker-tls
   rules:
-  - host: url-tracker.com
+  - host: api.url-tracker.com
     http:
       paths:
       - pathType: Prefix
@@ -23,7 +23,7 @@ spec:
             port: 
               number: 8001
 
-  - host: api.url-tracker.com
+  - host: url-tracker.com
     http:
       paths:
       - pathType: Prefix

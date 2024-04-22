@@ -17,7 +17,7 @@ jobs:
       with:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
     - name: Save DigitalOcean kubeconfig
-      run: doctl kubernetes cluster kubeconfig save k8s-url-tracker
+      run: doctl kubernetes cluster kubeconfig save url-tracker-clsuter
     - run: kubectl apply -f infra/K8S
     # - run: kubectl apply -f infra/K8S && kubectl apply -f infra/prod-k8s
      

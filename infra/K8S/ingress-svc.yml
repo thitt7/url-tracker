@@ -6,12 +6,13 @@ metadata:
     name: ingress-svc
 spec:
   ingressClassName: nginx
-  tls: 
-    - hosts:
-      - api.url-tracker.com
-      secretName: url-tracker-tls
+  # tls: 
+  #   - hosts:
+  #     - url-tracker.com
+  #     - api.url-tracker.com
+  #     secretName: url-tracker-tls
   rules:
-  - host: api.url-tracker.com
+  - host: url-tracker.com
     http:
       paths:
       - pathType: Prefix
@@ -21,3 +22,14 @@ spec:
             name: dotnet-clusterip
             port: 
               number: 8001
+
+  - host: api.url-tracker.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: next-clusterip
+            port: 
+              number: 4000

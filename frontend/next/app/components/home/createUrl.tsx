@@ -36,7 +36,7 @@ const CreateUrlForm = ({docker}: {docker: boolean}) => {
     let URL: string;
     // if (docker) {URL = `http://dotnet:${process.env.NEXT_PUBLIC_API_PORT}/api/urls`}
     // else {URL = `http://localhost:${process.env.NEXT_PUBLIC_API_PORT}/api/urls`}
-    URL = `http://localhost:8001/api/urls`;
+    URL = `http://url-tracker.com:8001/api/urls`;
 
     for (const [key, value] of formData.entries()) {
       if (key === 'url') {

@@ -46,7 +46,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy  =>
                       {
-                          policy.WithOrigins($"http://next:{PORT}", $"http://localhost:{PORT}", $"https://{DOMAIN}:{PORT}")
+                          policy.WithOrigins($"http://next:{PORT}", $"http://localhost:{PORT}", $"http://{DOMAIN}:{PORT}", $"https://{DOMAIN}:{PORT}")
                                             .AllowAnyHeader()
                                             .AllowAnyMethod();
                                             // .AllowAnyOrigin();

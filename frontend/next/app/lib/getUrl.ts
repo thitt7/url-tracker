@@ -4,7 +4,7 @@ const getUrl = async (id: string) => {
       let URL: string;
       if (process.env.DOCKER_ENV && !process.env.KUBERNETES_SERVICE_HOST) {URL = `http://${process.env.BACKEND}:${process.env.DOTNET_PORT}/api/urls/${id}`}
       else if (process.env.KUBERNETES_SERVICE_HOST !== undefined) {URL = `http://dotnet-clusterip:${process.env.DOTNET_PORT}/api/urls/${id}`}
-      else {URL = `http://${process.env.DOMAIN}:${process.env.DOTNET_PORT}/api/urls/${id}`}
+      else {URL = `http://api.${process.env.DOMAIN}:${process.env.DOTNET_PORT}/api/urls/${id}`}
       
       const res = await fetch(URL);
       if (!res.ok) {

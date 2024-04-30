@@ -46,7 +46,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy  =>
                       {
-                          policy.WithOrigins($"http://next:{PORT}", $"http://localhost:{PORT}", $"http://{DOMAIN}", $"https://{DOMAIN}")
+                          policy.WithOrigins($"http://next:{PORT}", $"http://localhost:{PORT}", $"http://{DOMAIN}", $"https://{DOMAIN}", "http://app.url-tracker.com")
                                             .SetIsOriginAllowedToAllowWildcardSubdomains()
                                             .AllowAnyHeader()
                                             .AllowAnyMethod();

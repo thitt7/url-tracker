@@ -4,7 +4,8 @@ async function updateUrl(updateUrl: UpdateUrlDto, id: string, docker: boolean) {
     let URL: string;
     // if (docker) {URL = `http://${process.env.BACKEND}:${process.env.DOTNET_PORT}/api/urls/${id}`}
     // else {URL = `http://${process.env.DOMAIN}:${process.env.DOTNET_PORT}/api/urls/${id}`}
-    URL = `http://api.${process.env.DOMAIN}/api/urls/${id}`
+    // URL = `http://api.${process.env.DOMAIN}/api/urls/${id}`;
+    URL = `http://api.url-tracker.com/api/urls/${id}`;
 
     let res;
 

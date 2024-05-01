@@ -46,7 +46,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy  =>
                       {
-                        var allowedDomains = new []{$"http://next:{PORT}", $"http://localhost:{PORT}", $"http://{DOMAIN}", $"https://{DOMAIN}", $"http://app.{DOMAIN}"};
+                        var allowedDomains = new []{$"http://next:{PORT}", $"http://localhost:{PORT}", $"http://{DOMAIN}", $"https://{DOMAIN}", $"http://*.{DOMAIN}"};
 
                         policy
                             .SetIsOriginAllowedToAllowWildcardSubdomains()

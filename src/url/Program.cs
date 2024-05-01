@@ -46,11 +46,14 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy  =>
                       {
-                          policy.WithOrigins($"http://next:{PORT}", $"http://localhost:{PORT}", $"http://{DOMAIN}", $"https://{DOMAIN}", $"http://app.{DOMAIN}")
-                                            .SetIsOriginAllowedToAllowWildcardSubdomains()
-                                            .AllowAnyHeader()
-                                            .AllowAnyMethod();
-                                            // .AllowAnyOrigin();
+                        var allowedDomains = new []{$"http://next:{PORT}", $"http://localhost:{PORT}", $"http://{DOMAIN}", $"https://{DOMAIN}", $"http://app.{DOMAIN}"};
+
+                        policy
+                            .SetIsOriginAllowedToAllowWildcardSubdomains()
+                            .WithOrigins(allowedDomains)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                            // .AllowAnyOrigin();
                       });
 });
 

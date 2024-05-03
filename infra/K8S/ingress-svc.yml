@@ -2,15 +2,17 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-svc
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
   labels:
     name: ingress-svc
 spec:
   ingressClassName: nginx
-  # tls: 
-  #   - hosts:
-  #     - url-tracker.com
-  #     - api.url-tracker.com
-  #     secretName: url-tracker-tls
+  tls: 
+    - hosts:
+      - app.url-tracker.com
+      - api.url-tracker.com
+      secretName: url-tracker-tls
   rules:
   - host: api.url-tracker.com
     http:

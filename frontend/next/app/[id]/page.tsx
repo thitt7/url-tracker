@@ -42,7 +42,7 @@ const OriginalUrl = async ({ params }: { params: { id: string } }) => {
       let URL: string;
       if (process.env.DOCKER_ENV && !process.env.KUBERNETES_SERVICE_HOST) {URL = `http://${process.env.BACKEND}:${process.env.DOTNET_PORT}/api/urls/visit/${trackingId}`}
       else if (process.env.KUBERNETES_SERVICE_HOST !== undefined) {URL = `http://dotnet-clusterip:${process.env.DOTNET_PORT}/api/urls/visit/${trackingId}`}
-      else {URL = `http://api.${process.env.DOMAIN}/api/urls/visit/${trackingId}`}
+      else {URL = `https://api.${process.env.DOMAIN}/api/urls/visit/${trackingId}`}
       
       const res = await fetch(URL, {
         method: 'PUT',

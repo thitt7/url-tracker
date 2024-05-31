@@ -4,6 +4,7 @@ const getIpData = async (ip: string): Promise<IpData | null> => {
 
   const newResponse = await fetch('https://api.ipify.org?format=json');
   const alternateIP = await newResponse.json();
+  
   const response = await fetch(`http://ip-api.com/json/${ip}?fields=continent,country,region,city,isp,org,mobile,proxy`)
 
   const data = await response.json();

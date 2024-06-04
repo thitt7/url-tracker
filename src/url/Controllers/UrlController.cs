@@ -78,7 +78,7 @@ public class UrlController: ControllerBase
         {
             var idExists = _trackingService.TrackingIdExists(updateUrlDto.TrackingId);
             if (idExists) {return Conflict();}
-            url.TrackingURL = $"https://{DOMAIN}/track/{updateUrlDto.TrackingId}";
+            url.TrackingURL = $"https://{DOMAIN}/{updateUrlDto.TrackingId}";
         }
 
         url.TrackingId = updateUrlDto.TrackingId ?? url.TrackingId;

@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import { Button, Checkbox } from '@mui/material';
 import {createUrlDto} from '@Types/DTO'
 
-const CreateUrlForm = ({docker}: {docker: boolean}) => {
+const CreateUrlForm = () => {
 
   const [formData, setformData] = useState<createUrlDto>();
   const [helperText, setHelperText] = useState('*You must enter your email and at least one preference');
@@ -16,7 +16,8 @@ const CreateUrlForm = ({docker}: {docker: boolean}) => {
   const disabledProp = {disabled: isUrl && isVerified ? false : true};
 
   function isValidURL(url: string) {
-    var urlRegex = /^(https?:\/\/)?([\w\d.-]+)\.([a-z]{2,})(:\d{1,5})?([\/\w.-]*)*\/?$/i;
+    // const urlRegex = /^(https?:\/\/)?([\w\d.-]+)\.([a-z]{2,})(:\d{1,5})?([\/\w.-]*)*\/?$/i;
+    const urlRegex = /^(https?|ftp):\/\/(([a-z\d]([a-z\d-]*[a-z\d])?\.)+[a-z]{2,}|localhost)(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/i;
     return urlRegex.test(url);
   }
 
@@ -31,9 +32,8 @@ const CreateUrlForm = ({docker}: {docker: boolean}) => {
 
   async function createUrl(formData: FormData) {
     let createUrl: createUrlDto | undefined;
-    /* set API url for local dev vs in docker container */
-    console.log('DOCKER ENV: ', docker)
     let URL: string;
+
     // if (docker) {URL = `http://dotnet:${process.env.NEXT_PUBLIC_API_PORT}/api/urls`}
     // else {URL = `http://localhost:${process.env.NEXT_PUBLIC_API_PORT}/api/urls`}
     URL = `https://api.url-tracker.com/api/urls`;

@@ -52,7 +52,7 @@ public class UrlController: ControllerBase
         var newTrackingId = _trackingService.GenerateUniqueTrackingId();
 
         url.TrackingId = newTrackingId;
-        url.TrackingURL = $"https://{DOMAIN}/track/{newTrackingId}";
+        url.TrackingURL = $"https://{DOMAIN}/{newTrackingId}";
 
         _context.URLs.Add(url);
 

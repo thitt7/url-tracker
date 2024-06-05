@@ -91,6 +91,7 @@ const LinkInfoTable = ({ url, docker }: { url: UrlDto, docker: boolean }) => {
 
     if (JSON.stringify(oldRow) !== JSON.stringify(newRow)) {
       const res = await updateUrl(updatedUrl, url.trackingId, docker);
+      console.log('url tracking id: ', url.trackingId)
       console.log('updateURL response: ', res)
 
       if (res?.ok) {
@@ -98,6 +99,14 @@ const LinkInfoTable = ({ url, docker }: { url: UrlDto, docker: boolean }) => {
           // router.replace(`/track/${value}`);
           console.log('changing ID and routing to new URL', newRow)
           window.history.replaceState({}, '', `${window.location.origin}/track/${value}`);
+
+          setRows((e: any) => {
+            let copy = [...e];
+            const index = rows.findIndex((e: any) => {return e.id === 'TrackingUrl'})
+            // copy[index] = newRow;
+            copy[index]['value'] == `https://url-tracker.com/${value}`;
+            return copy;
+          })
         }
 
         else if (id === "OriginalURL") {}

@@ -95,16 +95,15 @@ const LinkInfoTable = ({ url, docker }: { url: UrlDto, docker: boolean }) => {
       console.log('updateURL response: ', res)
 
       if (res?.ok) {
-        if (id === "TrackingId") { 
-          // router.replace(`/track/${value}`);
-          console.log('changing ID and routing to new URL', newRow)
+        if (id === "TrackingId") {
           window.history.replaceState({}, '', `${window.location.origin}/track/${value}`);
 
+          console.log('changing tracking url table state')
           setRows((e: any) => {
             let copy = [...e];
             const index = rows.findIndex((e: any) => {return e.id === 'TrackingUrl'})
             // copy[index] = newRow;
-            copy[index]['value'] == `https://url-tracker.com/${value}`;
+            copy[index]['value'] = `https://url-tracker.com/${value}`;
             return copy;
           })
         }

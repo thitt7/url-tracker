@@ -19,24 +19,25 @@ const Client = ({ Url }: { Url: UrlDto }) => {
                 console.log('userAgent in client component: ', userAgent)
 
                 const Log: VisitLogDto = { ...IpData, createdAt: new Date().toISOString(), userAgent: userAgent, ipAddress: ip };
+                console.log('LOG: ', Log)
 
-                const addVisitLog = async (log: VisitLogDto) => {
-                    console.log('adding visit log...')
-                    try {
-                        let URL = `https://api.${process.env.DOMAIN}/api/urls/visit/${trackingId}`;
+                // const addVisitLog = async (log: VisitLogDto) => {
+                //     console.log('adding visit log...')
+                //     try {
+                //         let URL = `https://api.${process.env.DOMAIN}/api/urls/visit/${trackingId}`;
 
-                        const res = await fetch(URL, {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(Log)
-                        })
-                        res.json();
-                    } catch (e) {
-                        console.error('error adding visit log:', e)
-                    }
-                }
+                //         const res = await fetch(URL, {
+                //             method: 'PUT',
+                //             headers: { 'Content-Type': 'application/json' },
+                //             body: JSON.stringify(Log)
+                //         })
+                //         res.json();
+                //     } catch (e) {
+                //         console.error('error adding visit log:', e)
+                //     }
+                // }
 
-                addVisitLog(Log);
+                // addVisitLog(Log);
             } catch (error) {
                 console.error('Error fetching ip data:', error);
             }

@@ -38,9 +38,9 @@ const OriginalUrl = async ({ params }: { params: { id: string } }) => {
   const header = headers();
   // const userAgent = header.get('user-agent') || '';
   // const ip = (header.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0];
-  const ip = await getIP();
+  // const ip = await getIP();
+  // const IpData = await getIpData(ip);
 
-  const IpData = await getIpData(ip);
   // const Log: VisitLogDto = {...IpData, createdAt: new Date().toISOString(), userAgent: userAgent, ipAddress: ip};
 
   // const addVisitLog = async (log: VisitLogDto) => {

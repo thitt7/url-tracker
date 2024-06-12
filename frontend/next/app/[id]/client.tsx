@@ -3,10 +3,19 @@
 import React, { useState, useEffect } from 'react';
 import Redirect from './redirect';
 import getIpData from '@lib/getIpData';
-import getIP from '@lib/getIP';
+// import getIP from '@lib/getIP';
 import { VisitLogDto, UrlDto } from '@Types/DTO';
 
 const Client = ({ Url }: { Url: UrlDto }) => {
+
+    const getIP = async (): Promise<string> => {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const IP = await response.json();
+    
+        console.log('fetched IP: ', IP)
+    
+        return IP;
+    }
 
     useEffect(() => {
 
@@ -14,8 +23,9 @@ const Client = ({ Url }: { Url: UrlDto }) => {
 
             console.log('running useEffect fn..')
             const { trackingId } = Url;
-            const ip = await getIP();
-            const IpData = await getIpData(ip);
+            // const ip = await getIP();
+            await getIP();
+            // const IpData = await getIpData(ip);
             const userAgent = navigator.userAgent;
             console.log('userAgent in client component: ', userAgent)
 

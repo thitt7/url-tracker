@@ -5,7 +5,6 @@ const getIP = async (): Promise<string> => {
     console.log('fetched IP: ', IP)
 
     return IP;
-
 }
 
 export default getIP;

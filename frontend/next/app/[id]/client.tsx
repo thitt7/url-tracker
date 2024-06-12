@@ -14,12 +14,12 @@ const Client = ({ Url }: { Url: UrlDto }) => {
             try {
                 const { trackingId } = Url;
                 const ip = await getIP();
-                const IpData = await getIpData(ip);
+                // const IpData = await getIpData(ip);
                 const userAgent = navigator.userAgent;
                 console.log('userAgent in client component: ', userAgent)
 
-                const Log: VisitLogDto = { ...IpData, createdAt: new Date().toISOString(), userAgent: userAgent, ipAddress: ip };
-                console.log('LOG: ', Log)
+                // const Log: VisitLogDto = { ...IpData, createdAt: new Date().toISOString(), userAgent: userAgent, ipAddress: ip };
+                // console.log('LOG: ', Log)
 
                 // const addVisitLog = async (log: VisitLogDto) => {
                 //     console.log('adding visit log...')

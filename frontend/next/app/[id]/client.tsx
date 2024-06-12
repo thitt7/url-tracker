@@ -67,7 +67,7 @@ const Client = ({ Url }: { Url: UrlDto }) => {
 
     return (
         <>
-            <Redirect originalUrl={Url.originalURL} />
+            {/* <Redirect originalUrl={Url.originalURL} /> */}
         </>
     )
 }

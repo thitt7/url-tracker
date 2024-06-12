@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { redirect } from 'next/navigation';
 import Redirect from './redirect';
 import getIpData from '@lib/getIpData';
 // import getIP from '@lib/getIP';
@@ -60,6 +61,8 @@ const Client = ({ Url }: { Url: UrlDto }) => {
             //     console.error('Error fetching ip data:', error);
             // }
         })();
+
+        redirect('example.com');
 
         return () => { }
     }, [])

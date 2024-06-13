@@ -30,6 +30,8 @@ const Client = ({ Url }: { Url: UrlDto }) => {
             const userAgent = navigator.userAgent;
             console.log('userAgent in client component: ', userAgent)
 
+            redirect('example.com');
+
             // try {
             //     const { trackingId } = Url;
             //     const ip = await getIP();
@@ -61,8 +63,6 @@ const Client = ({ Url }: { Url: UrlDto }) => {
             //     console.error('Error fetching ip data:', error);
             // }
         })();
-
-        redirect('example.com');
 
         return () => { }
     }, [])

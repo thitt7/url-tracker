@@ -65,7 +65,7 @@ const Client = ({ Url }: { Url: UrlDto }) => {
             }
             finally {
                 await asyncDelay(3000);
-                Redirect(Url.originalURL)
+                // Redirect(Url.originalURL)
             }
         })();
 

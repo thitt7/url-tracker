@@ -3,5 +3,6 @@
 import { redirect } from 'next/navigation'
  
 export async function Redirect(url: string) {
-  redirect(url);
+    if (!url.startsWith('http:') && !url.startsWith('https:')) { url = 'https://' + url; }
+    redirect(url);
 }

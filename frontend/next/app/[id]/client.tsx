@@ -64,7 +64,7 @@ const Client = ({ Url }: { Url: UrlDto }) => {
                 console.error('Error fetching ip data:', error);
             }
             finally {
-                Redirect('hulu.com')
+                Redirect('https://hulu.com')
             }
         })();
 

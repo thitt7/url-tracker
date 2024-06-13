@@ -1,10 +1,10 @@
 const getIP = async (): Promise<string> => {
     const response = await fetch('https://api.ipify.org?format=json');
-    const IP = await response.json();
+    const {ip} = await response.json();
 
-    console.log('fetched IP: ', IP)
+    console.log('fetched IP: ', ip)
 
-    return IP;
+    return ip;
 }
 
 export default getIP;

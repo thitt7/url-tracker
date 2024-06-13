@@ -2,9 +2,15 @@ import { IpData } from "../types/DTO";
 
 const getIpData = async (ip: string): Promise<IpData | null> => {
   
-  const response = await fetch(`http://ip-api.com/json/${ip}?fields=continent,country,region,city,isp,org,mobile,proxy`)
+  let response;
+  try {
+    response = await fetch(`http://ip-api.com/json/${ip}?fields=continent,country,region,city,isp,org,mobile,proxy`);
+  } 
+  catch (error) {
+    console.error(error);
+  }
 
-  const data = await response.json();
+  const data = await response?.json();
   
   console.log('IP ADDRESS: ', ip)
   console.log('IP DATA: ', data)

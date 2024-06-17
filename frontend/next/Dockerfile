@@ -1,20 +1,28 @@
 # Stage 1: Dependencies
-FROM node:18-alpine AS deps
+FROM node:18-alpine AS base
+
+FROM base as deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY frontend/next/package*.json ./
 RUN npm install --omit-dev
 
 # Stage 2: Build
-FROM node:18-alpine AS builder
+FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY frontend/next ./
 ENV NEXT_TELEMETRY_DISABLED 1
-RUN npm run build
+
+RUN \
+  if [ -f yarn.lock ]; then yarn run build; \
+  elif [ -f package-lock.json ]; then npm run build; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
 # Stage 3: Production image
-FROM node:18-alpine AS runner
+FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
@@ -23,6 +31,11 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/next.config.mjs ./next.config.mjs
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
@@ -35,4 +48,5 @@ ENV PORT 4000
 ENV DOCKER_ENV=true
 ENV NEXT_PUBLIC_API_URL http://localhost:8001/
 
-CMD ["node", "server.js"]
+# CMD ["node", "server.js"]
+CMD HOSTNAME="0.0.0.0" node server.js

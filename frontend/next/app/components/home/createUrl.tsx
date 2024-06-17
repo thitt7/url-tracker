@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import { Button, Checkbox } from '@mui/material';
 import {createUrlDto} from '@Types/DTO'
 
-const CreateUrlForm = () => {
+const CreateUrlForm = ({apiUrl}: { apiUrl: string }) => {
 
   const [formData, setformData] = useState<createUrlDto>();
   const [helperText, setHelperText] = useState('*You must enter your email and at least one preference');
@@ -14,6 +14,9 @@ const CreateUrlForm = () => {
   const [isUrl, setIsUrl] = useState(false);
 
   const disabledProp = {disabled: isUrl && isVerified ? false : true};
+
+  console.log('API URL PROP IN CLIENT: ', apiUrl)
+  console.log('API URL ENV VAR IN CLIENT: ', process.env.NEXT_PUBLIC_API_URL)
 
   function isValidURL(url: string) {
     const urlRegex = /^(https?:\/\/)?([\w\d.-]+)\.([a-z]{2,})(:\d{1,5})?([\/\w.-]*)*\/?$/i;
@@ -36,7 +39,9 @@ const CreateUrlForm = () => {
 
     // if (docker) {URL = `http://dotnet:${process.env.NEXT_PUBLIC_API_PORT}/api/urls`}
     // else {URL = `http://localhost:${process.env.NEXT_PUBLIC_API_PORT}/api/urls`}
-    URL = `https://api.url-tracker.com/api/urls`;
+    
+    // URL = `https://api.url-tracker.com/api/urls`;
+    URL = apiUrl;
 
     for (const [key, value] of formData.entries()) {
       if (key === 'url') {

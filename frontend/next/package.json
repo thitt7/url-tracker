@@ -15,6 +15,7 @@
     "@mui/material": "^5.15.10",
     "@mui/x-data-grid": "^6.19.6",
     "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.4.5",
     "html-react-parser": "^5.1.8",
     "next": "14.1.0",
     "react": "^18",

@@ -2,7 +2,7 @@ const getUrl = async (id: string) => {
     try {
       /* set API url for local dev, docker container, k8s */
       let URL: string;
-      if (process.env.DOCKER_ENV && !process.env.KUBERNETES_SERVICE_HOST) {URL = `http://${process.env.BACKEND}:${process.env.DOTNET_PORT}/api/urls/${id}`}
+      if (!process.env.KUBERNETES_SERVICE_HOST) {URL = `http://${process.env.BACKEND}:${process.env.DOTNET_PORT}/api/urls/${id}`}
       else if (process.env.KUBERNETES_SERVICE_HOST !== undefined) {URL = `http://dotnet-clusterip:${process.env.DOTNET_PORT}/api/urls/${id}`}
       else {URL = `https://api.${process.env.DOMAIN}/api/urls/${id}`}
       

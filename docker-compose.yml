@@ -1,9 +1,3 @@
-# networks:
-#   custom:
-#     ipam:
-#       config:
-#         - subnet: 10.5.0.0/16
-
 services:
   mysql:
     image: mysql:latest
@@ -42,13 +36,25 @@ services:
   next:
     image: next:latest
     env_file:
-      - .env
-    # environment:
+      - .env.local
+    environment:
+    - NODE_ENV=development
     #   - VIRTUAL_HOST=api.url-tracker.com
-    #   - VIRTUAL_PORT=4000
     build:
       context: .
       dockerfile: frontend/next/Dockerfile
+      args:
+        ENV_FILE: .env.local
+        NODE_ENV_ARG: development
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend/next
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./frontend/next/package.json
     ports:
       - 4000:4000
     volumes:

@@ -12,7 +12,13 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY frontend/next ./
-ENV NEXT_TELEMETRY_DISABLED 1
+
+# Define build arguments
+ARG ENV_FILE
+ARG NODE_ENV_ARG
+
+# Manually copy over env files
+COPY ${ENV_FILE} .env
 
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
@@ -24,7 +30,8 @@ RUN \
 # Stage 3: Production image
 FROM base AS runner
 WORKDIR /app
-ENV NODE_ENV production
+
+ENV NODE_ENV ${NODE_ENV_ARG}
 ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
@@ -46,7 +53,6 @@ USER nextjs
 EXPOSE 4000
 ENV PORT 4000
 ENV DOCKER_ENV=true
-ENV NEXT_PUBLIC_API_URL http://localhost:8001/
 
 # CMD ["node", "server.js"]
 CMD HOSTNAME="0.0.0.0" node server.js

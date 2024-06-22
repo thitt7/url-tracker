@@ -1,28 +1,27 @@
-import { UpdateUrlDto } from "@Types/DTO";
+import { UpdateUrlDto } from '@Types/DTO'
 
 async function updateUrl(updateUrl: UpdateUrlDto, id: string, docker: boolean) {
-    let URL: string;
+    let URL: string = `${process.env.NEXT_PUBLIC_API_URL}/api/urls/${id}`
     // if (docker) {URL = `http://${process.env.BACKEND}:${process.env.DOTNET_PORT}/api/urls/${id}`}
     // else {URL = `http://${process.env.DOMAIN}:${process.env.DOTNET_PORT}/api/urls/${id}`}
     // URL = `http://api.${process.env.DOMAIN}/api/urls/${id}`;
-    URL = `https://api.url-tracker.com/api/urls/${id}`;
 
-    let res;
+    let res
 
     try {
         res = await fetch(URL, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateUrl)
-        });
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updateUrl),
+        })
         const response = await res.json()
-        return res;
+        return res
     } catch (error) {
         console.log(error)
     }
 
-    return res;
+    return res
+}
 
-  }
+export default updateUrl
 
-export default updateUrl;

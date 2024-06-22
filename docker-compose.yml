@@ -38,7 +38,7 @@ services:
     env_file:
       - .env.local
     environment:
-    - NODE_ENV=development
+      - NODE_ENV=development
     #   - VIRTUAL_HOST=api.url-tracker.com
     build:
       context: .
@@ -48,11 +48,11 @@ services:
         NODE_ENV_ARG: development
     develop:
       watch:
-        - action: sync
+        - action: rebuild
           path: ./frontend/next
-          target: /app
+          target: ./frontend/next/.next/standalone
           ignore:
-            - node_modules/
+            - ./frontend/next/node_modules/
         - action: rebuild
           path: ./frontend/next/package.json
     ports:
@@ -74,3 +74,4 @@ services:
 
 volumes:
   mysql-data:
+

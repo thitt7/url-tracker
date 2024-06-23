@@ -11,13 +11,13 @@ import { VisitLogDto, UrlDto } from '@Types/DTO';
 
 const Client = ({ Url }: { Url: UrlDto }) => {
 
-    const getIP = async (): Promise<string> => {
+    const getIP = async (): Promise<any> => {
         const response = await fetch('https://api.ipify.org?format=json');
-        const IP = await response.json();
+        const data = await response.json();
 
-        console.log('fetched IP: ', IP)
+        console.log('fetched IP: ', data)
 
-        return IP;
+        return data['ip'];
     }
 
     useEffect(() => {
@@ -46,7 +46,7 @@ const Client = ({ Url }: { Url: UrlDto }) => {
                 const addVisitLog = async (log: VisitLogDto) => {
                     console.log('adding visit log...')
                     try {
-                        let URL = `https://api.${process.env.DOMAIN}/api/urls/visit/${trackingId}`;
+                        let URL = `${process.env.NEXT_PUBLIC_API_URL}/api/urls/visit/${trackingId}`;
 
                         const res = await fetch(URL, {
                             method: 'PUT',

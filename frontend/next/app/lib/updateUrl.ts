@@ -1,10 +1,7 @@
 import { UpdateUrlDto } from '@Types/DTO'
 
 async function updateUrl(updateUrl: UpdateUrlDto, id: string, docker: boolean) {
-    let URL: string = `${process.env.NEXT_PUBLIC_API_URL}/api/urls/${id}`
-    // if (docker) {URL = `http://${process.env.BACKEND}:${process.env.DOTNET_PORT}/api/urls/${id}`}
-    // else {URL = `http://${process.env.DOMAIN}:${process.env.DOTNET_PORT}/api/urls/${id}`}
-    // URL = `http://api.${process.env.DOMAIN}/api/urls/${id}`;
+    let URL: string = `${process.env.NEXT_PUBLIC_API_URL}/api/urls/${id}`;
 
     let res
 
@@ -23,5 +20,4 @@ async function updateUrl(updateUrl: UpdateUrlDto, id: string, docker: boolean) {
     return res
 }
 
-export default updateUrl
-
+export default updateUrl;

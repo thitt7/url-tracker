@@ -43,6 +43,7 @@ services:
     build:
       context: .
       dockerfile: frontend/next/Dockerfile
+      target: development
       args:
         ENV_FILE: .env.local
         NODE_ENV_ARG: development

@@ -1,3 +1,20 @@
+# Define build arguments
+ARG ENV_FILE
+ARG NODE_ENV_ARG
+
+# Stage 1: Development image
+FROM node:18-alpine AS development
+WORKDIR /app
+COPY frontend/next/package*.json ./
+RUN npm install --omit-dev
+COPY frontend/next ./
+
+COPY ${ENV_FILE} .env
+ENV NODE_ENV ${NODE_ENV_ARG}
+
+EXPOSE 4000
+CMD ["npm", "run", "dev"]
+
 # Stage 1: Dependencies
 FROM node:18-alpine AS base
 
@@ -12,10 +29,6 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY frontend/next ./
-
-# Define build arguments
-ARG ENV_FILE
-ARG NODE_ENV_ARG
 
 # Manually copy over env files
 COPY ${ENV_FILE} .env

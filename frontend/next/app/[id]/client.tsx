@@ -14,8 +14,7 @@ const Client = ({ Url }: { Url: UrlDto }) => {
     const getIP = async (): Promise<any> => {
         const response = await fetch('https://api.ipify.org?format=json');
         const data = await response.json();
-
-        console.log('fetched IP: ', data)
+        console.log('fetched IP: ', data);
 
         return data['ip'];
     }

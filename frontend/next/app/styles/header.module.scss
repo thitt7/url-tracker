@@ -1,0 +1,7 @@
+@use 'variables' as *;
+
+#toolbar {
+    max-width: $max-width-lg;
+    margin: auto;
+    width: 100%;
+}

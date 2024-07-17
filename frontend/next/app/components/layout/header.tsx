@@ -61,6 +61,7 @@ const Header = (props: any) => {
             <AppBar 
               component="nav"
               color='inherit'
+              id={styles.appBar}
             >
               <Toolbar id={styles['toolbar']}>
                   {isTablet ?
@@ -73,7 +74,7 @@ const Header = (props: any) => {
                     >
                     </IconButton>
                   </>
-                  : 
+                  :
                   <></>}
                 <Typography
                   variant="h6"
@@ -82,7 +83,10 @@ const Header = (props: any) => {
                 >
                   <Link href={`/`}>URL Tracker</Link>
                 </Typography>
-                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <Box 
+                  sx={{ display: { xs: 'none', sm: 'block' } }}
+                  className={styles.navItems}
+                >
                   <Link href={`/register`}>
                       <Button sx={{ color: '#fff' }}>
                         Register

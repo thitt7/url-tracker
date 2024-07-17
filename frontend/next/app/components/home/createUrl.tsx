@@ -4,7 +4,9 @@ import React, {useState} from 'react';
 import { redirect } from 'next/navigation';
 import TextField from '@mui/material/TextField';
 import { Button, Checkbox } from '@mui/material';
-import {createUrlDto} from '@Types/DTO'
+import {createUrlDto} from '@Types/DTO';
+
+import styles from '@styles/home.module.scss';
 
 const CreateUrlForm = () => {
 
@@ -61,28 +63,29 @@ const CreateUrlForm = () => {
   // const setVerified = (verified: boolean): void => { setIsVerified(verified) }
 
   return (
-    <form action={createUrl}>
-      {/* <Recaptcha setVerified={setVerified}/> */}
-
-      <TextField
-        onChange={handleChange}
-        name='url'
-        autoFocus
-        margin="dense"
-        id="url"
-        label="Enter a URL"
-        // type="email"
-        fullWidth
-        variant="outlined"
-      />
-        
-      <Button 
-        variant="contained"
-        type="submit"
-        {...disabledProp}>
-          Create URL
-      </Button>
-    </form>
+    <section id={styles['create']}>
+      <form id={styles['form']} action={createUrl}>
+        {/* <Recaptcha setVerified={setVerified}/> */}
+        <TextField
+          onChange={handleChange}
+          name='url'
+          autoFocus
+          margin="dense"
+          id="url"
+          label="Enter a URL"
+          // type="email"
+          fullWidth
+          variant="outlined"
+        />
+      
+        <Button
+          variant="contained"
+          type="submit"
+          {...disabledProp}>
+            Create URL
+        </Button>
+      </form>
+    </section>
   )
 }
 

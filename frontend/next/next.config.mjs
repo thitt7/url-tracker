@@ -1,6 +1,5 @@
 // import dotenv from 'dotenv';
 
-// Load environment variables from .env file
 // dotenv.config({ path: '../../.env' });
 
 /** @type {import('next').NextConfig} */
@@ -11,7 +10,6 @@ const nextConfig = {
       config.optimization = {
         ...config.optimization,
         // usedExports: true,
-        // Additional optimizations can be added here
       };
   
       if (!isServer) {

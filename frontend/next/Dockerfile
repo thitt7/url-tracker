@@ -39,7 +39,6 @@ RUN npm install -g pnpm
 RUN pnpm install --prod
 RUN pnpm run build
 
-
 # Stage 3: Production image
 FROM base AS runner
 WORKDIR /app
@@ -69,6 +68,7 @@ ENV DOCKER_ENV=true
 
 # CMD ["node", "server.js"]
 CMD HOSTNAME="0.0.0.0" node server.js
+
 
 # development stage w/ dev server
 FROM node:18-alpine AS development

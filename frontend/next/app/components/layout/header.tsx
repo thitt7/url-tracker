@@ -17,6 +17,7 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Button from '@mui/material/Button'
+import Avatar from '@mui/material/Avatar'
 
 import { useUser } from '@auth0/nextjs-auth0/client'
 
@@ -72,7 +73,7 @@ const Header = (props: any) => {
                         {isTablet ? (
                             <>
                                 <Link href={`/`}>
-                                    <img src="/logo-header.png" alt="Sachse Community Site header logo" />
+                                    <img src="/logo-header.png" alt="URL Tracker" />
                                 </Link>
                                 <IconButton
                                     disableRipple
@@ -91,7 +92,10 @@ const Header = (props: any) => {
                             <Link href={`/`}>URL Tracker</Link>
                         </Typography>
                         {(!isLoading && !user) ?? (
-                            <Box sx={{ display: { xs: 'none', sm: 'block' } }} className={styles.navItems}>
+                            <Box
+                                sx={{ display: { xs: 'none', sm: 'block', display: 'flex' } }}
+                                className={styles.navItems}
+                            >
                                 <Link href={`auth/login`}>
                                     <Button sx={{ color: '#fff' }}>Register</Button>
                                 </Link>
@@ -101,7 +105,11 @@ const Header = (props: any) => {
                             </Box>
                         )}
                         {!isLoading && user ? (
-                            <Box sx={{ display: { xs: 'none', sm: 'block' } }} className={styles.navItems}>
+                            <Box
+                                sx={{ display: { xs: 'none', sm: 'block', display: 'flex' } }}
+                                className={styles.navItems}
+                            >
+                                {user.name && user.picture && <Avatar alt={user.name} src={user.picture} />}
                                 <Link href={`/auth/logout`}>
                                     <Button sx={{ color: '#fff' }}>Log out</Button>
                                 </Link>
@@ -134,4 +142,3 @@ const Header = (props: any) => {
 }
 
 export default Header
-

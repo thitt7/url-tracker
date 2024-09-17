@@ -4,7 +4,10 @@ import React, {useState} from 'react';
 import { redirect } from 'next/navigation';
 import TextField from '@mui/material/TextField';
 import { Button, Checkbox } from '@mui/material';
-import {createUrlDto} from '@Types/DTO'
+import isURL from 'validator/es/lib/isURL';
+import {createUrlDto} from '@Types/DTO';
+
+import styles from '@styles/home.module.scss';
 
 const CreateUrlForm = () => {
 
@@ -17,14 +20,14 @@ const CreateUrlForm = () => {
 
   console.log('API URL ENV VAR IN CLIENT: ', process.env.NEXT_PUBLIC_API_URL)
 
-  function isValidURL(url: string) {
-    const urlRegex = /^(https?:\/\/)?([\w\d.-]+)\.([a-z]{2,})(:\d{1,5})?([\/\w.-]*)*\/?$/i;
+  // function isValidURL(url: string) {
+  //   const urlRegex = /^(https?:\/\/)?([\w\d.-]+)\.([a-z]{2,})(:\d{1,5})?([\/\w.-]*)*\/?$/i;
 
-    return urlRegex.test(url);
-  }
+  //   return urlRegex.test(url);
+  // }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (isValidURL(event.target.value)) {
+    if (isURL(event.target.value)) {
         setformData({ originalURL: event.target.value });
         setIsUrl(true)
     }
@@ -61,28 +64,29 @@ const CreateUrlForm = () => {
   // const setVerified = (verified: boolean): void => { setIsVerified(verified) }
 
   return (
-    <form action={createUrl}>
-      {/* <Recaptcha setVerified={setVerified}/> */}
-
-      <TextField
-        onChange={handleChange}
-        name='url'
-        autoFocus
-        margin="dense"
-        id="url"
-        label="Enter a URL"
-        // type="email"
-        fullWidth
-        variant="outlined"
-      />
-        
-      <Button 
-        variant="contained"
-        type="submit"
-        {...disabledProp}>
-          Create URL
-      </Button>
-    </form>
+    <section id={styles['create']}>
+      <form id={styles['form']} action={createUrl}>
+        {/* <Recaptcha setVerified={setVerified}/> */}
+        <TextField
+          onChange={handleChange}
+          name='url'
+          autoFocus
+          margin="dense"
+          id="url"
+          label="Enter a URL"
+          // type="email"
+          fullWidth
+          variant="outlined"
+        />
+      
+        <Button
+          variant="contained"
+          type="submit"
+          {...disabledProp}>
+            Create URL
+        </Button>
+      </form>
+    </section>
   )
 }
 

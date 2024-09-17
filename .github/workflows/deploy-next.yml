@@ -31,6 +31,10 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PW }}
 
+    # Updated: Create .env file from secret
+    - name: Create .env file from secret
+      run: echo "${{ secrets.ENV_FILE }}" > .env
+
     - name: Build the Docker image
       uses: docker/build-push-action@v3
       with:
@@ -38,6 +42,9 @@ jobs:
         file: ${{ env.DOCKERFILE }}
         push: true
         tags: ${{ env.REGISTRY_IMAGE }}:latest
+        build-args: |
+          ENV_FILE=.env
+          NODE_ENV_ARG=production
 
     - name: Install doctl
       uses: digitalocean/action-doctl@v2

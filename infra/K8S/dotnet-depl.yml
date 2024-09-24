@@ -11,6 +11,11 @@ spec:
       labels:
         app: dotnet
     spec:
+      initContainers:
+      - name: wait-for-mysql
+        image: busybox
+        command: ['sh', '-c', 'until nc -z mysql-service 3306; do echo waiting for mysql; sleep 2; done;']
+
       containers:
       - name: dotnet
         image: thitt7/dotnet
@@ -30,6 +35,15 @@ spec:
               name: env-secrets
         ports:
         - containerPort: 8001
+
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8001
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 3
+          successThreshold: 1
 ---
 apiVersion: v1
 kind: Service

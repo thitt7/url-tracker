@@ -5,7 +5,7 @@ using dotenv.net;
 using dotenv.net.Utilities;
 using Polly;
 
-Console.WriteLine("-------PROGRAM FILE UPDATED-------");
+Console.WriteLine("-------PROGRAM FILE-------");
 
 string dockerEnv = Environment.GetEnvironmentVariable("DOCKER_ENV");
 string DOMAIN = null;
@@ -71,11 +71,16 @@ var app = builder.Build();
 
 // app.UseHttpsRedirection();
 
+
+
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+// add health check endpoint for k8s readiness probe
+app.MapHealthChecks("/healthz");
 
 // Get an instance of ConnectionDebug
 var connectionDebug = app.Services.GetRequiredService<ConnectionDebug>();

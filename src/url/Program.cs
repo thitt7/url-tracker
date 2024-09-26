@@ -60,6 +60,7 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHealthChecks();
 builder.Services.AddDbContext<UrlDbContext>(opt => {
     opt.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"));
 });

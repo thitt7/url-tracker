@@ -61,8 +61,13 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddHealthChecks();
-builder.Services.AddDbContext<UrlDbContext>(opt => {
-    opt.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddDbContext<UrlDbContext>(opt =>
+{
+    opt.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"), 
+        mysqlOptions =>
+        {
+            mysqlOptions.EnableRetryOnFailure(); // Enable transient error resiliency
+        });
 });
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<TrackingService>();

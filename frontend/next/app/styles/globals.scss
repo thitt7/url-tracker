@@ -1,18 +1,5 @@
 @use 'variables' as *;
 
-// @font-face {
-//   font-family: 'ms_sans_serif';
-//      src: url('../../fonts/ms_sans_serif.woff2') format('woff2');
-//      font-weight: 400;
-//      font-style: normal
-// }
-// @font-face {
-//        font-family: 'ms_sans_serif';
-//        src: url('../../fonts/ms_sans_serif_bold.woff2') format('woff2');
-//        font-weight: bold;
-//        font-style: normal
-// }
-
 * {
   // font-family: 'ms_sans_serif';
   box-sizing: border-box;
@@ -33,11 +20,6 @@ body {
   margin: 0;
   overflow: hidden;
 }
-
-// button {
-//   background-color: $primary !important;
-//   padding: 5px 10px !important;
-// }
 
 a {
   color: inherit;
@@ -87,9 +69,3 @@ a {
 *:focus {
   outline: none;
 }
-
-// @media (prefers-color-scheme: dark) {
-//   html {
-//     color-scheme: dark;
-//   }
-// } 

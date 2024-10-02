@@ -1,15 +1,13 @@
-/** @type {import('next').NextConfig} */
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
 const nextConfig = {
   output: 'standalone',
   webpack: (config, { isServer }) => {
-    // Enable tree shaking
     config.optimization = {
       ...config.optimization,
-      // usedExports: true,
     };
 
     if (!isServer) {
-      // Client-side only optimizations
       config.optimization.splitChunks = {
         chunks: 'all',
         automaticNameDelimiter: '.',
@@ -27,19 +25,21 @@ const nextConfig = {
         },
       };
 
-      // Ensure production mode is enabled
       config.mode = 'production';
     }
 
-    // custom support for processing/importing SCSS
     config.module.rules.push({
       test: /\.scss$/,
       use: [
-        'style-loader',
+        isServer ? MiniCssExtractPlugin.loader : 'style-loader',  // Use MiniCssExtractPlugin for SSR
         'css-loader',
-        'sass-loader'
+        'sass-loader',
       ],
     });
+
+    if (isServer) {
+      config.plugins.push(new MiniCssExtractPlugin());
+    }
 
     return config;
   },

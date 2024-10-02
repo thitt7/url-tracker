@@ -16,8 +16,11 @@ COPY frontend/next/package*.json ./
 #   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install --prod; \
 #   else echo "prod install lockfile not found." && exit 1; \
 #   fi
-RUN npm install -g pnpm
-RUN pnpm install --prod
+
+# pnpm install
+# RUN npm install -g pnpm
+# RUN pnpm install --prod
+RUN npm install --omit-dev
 
 # Stage 2: Build
 FROM base AS builder
@@ -35,9 +38,12 @@ COPY ${ENV_FILE} .env
 #   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
 #   else echo "Lockfile not found." && exit 1; \
 #   fi
-RUN npm install -g pnpm
-RUN pnpm install --prod
-RUN pnpm run build
+
+# pnpm build
+# RUN npm install -g pnpm
+# RUN pnpm install --prod
+# RUN pnpm run build
+RUN npm run build
 
 # Stage 3: Production image
 FROM base AS runner
@@ -86,14 +92,16 @@ COPY frontend/next/package*.json ./
 #   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install --prod; \
 #   else echo "dev install lockfile not found." && exit 1; \
 #   fi
-RUN npm install -g pnpm
-RUN pnpm install --prod
 
+# pnpm install
+# RUN npm install -g pnpm
+# RUN pnpm install --prod
+RUN npm install --omit-dev
 COPY frontend/next ./
 
 COPY ${ENV_FILE} .env
 ENV NODE_ENV ${NODE_ENV_ARG}
 
 EXPOSE 4000
-# CMD ["npm", "run", "dev"]
-CMD ["pnpm", "dev"]
+CMD ["npm", "run", "dev"]
+# CMD ["pnpm", "dev"]

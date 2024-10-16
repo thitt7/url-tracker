@@ -5,7 +5,7 @@ FROM node:18-alpine AS base
 ARG ENV_FILE
 ARG NODE_ENV_ARG
 
-FROM base as deps
+FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY frontend/next/package*.json ./
@@ -20,7 +20,7 @@ COPY frontend/next/package*.json ./
 # pnpm install
 # RUN npm install -g pnpm
 # RUN pnpm install --prod
-RUN npm install --omit-dev
+RUN npm install
 
 # Stage 2: Build
 FROM base AS builder
@@ -72,9 +72,8 @@ EXPOSE 4000
 ENV PORT 4000
 ENV DOCKER_ENV=true
 
-# CMD ["node", "server.js"]
-CMD HOSTNAME="0.0.0.0" node server.js
-
+# CMD HOSTNAME="0.0.0.0" node server.js
+CMD ["npm", "run", "start"]
 
 # development stage w/ dev server
 FROM node:18-alpine AS development

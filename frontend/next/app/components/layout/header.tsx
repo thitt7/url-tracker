@@ -66,7 +66,7 @@ const Header = (props: any) => {
               <Toolbar id={styles['toolbar']}>
                   {isTablet ?
                   <>
-                    <Link href={`/`}><img src="/logo-header.png" alt="Sachse Community Site header logo" /></Link>
+                    <Link href={`/`}><img src="/logo-header.png" alt="Url Tracker logo" /></Link>
                     <IconButton
                     disableRipple
                     aria-label="open drawer"

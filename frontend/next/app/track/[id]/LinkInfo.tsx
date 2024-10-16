@@ -10,7 +10,6 @@ import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { UrlDto, UpdateUrlDto } from '@Types/DTO';
 import styles from '@styles/tracking.module.scss';
-import '@styles/globals.scss'
 
 const LinkInfoTable = ({ url, docker }: { url: UrlDto, docker: boolean }) => {
   const router = useRouter();

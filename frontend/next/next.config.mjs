@@ -1,7 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  // You can still keep standalone output for serverless deployment if needed
-  output: 'standalone',
-};
+const nextConfig = {};
 
 export default nextConfig;

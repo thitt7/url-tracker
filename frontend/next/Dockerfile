@@ -72,6 +72,10 @@ EXPOSE 4000
 ENV PORT 4000
 ENV DOCKER_ENV=true
 
+RUN echo "NODE_ENV value set to: ${NODE_ENV}"
+RUN echo "NODE_ENV_ARG value set to: ${NODE_ENV_ARG}"
+RUN echo "running production image server..."
+
 # CMD HOSTNAME="0.0.0.0" node server.js
 CMD ["npm", "run", "start"]
 

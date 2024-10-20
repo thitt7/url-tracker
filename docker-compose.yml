@@ -39,40 +39,21 @@ services:
       - .env.local
     environment:
       - NODE_ENV=development
-    #   - VIRTUAL_HOST=api.url-tracker.com
+    command: npm run dev
     build:
       context: .
-      dockerfile: frontend/next/Dockerfile
-      target: development
+      dockerfile: frontend/next/Dockerfile.development
+      target: dev
       args:
         ENV_FILE: .env.local
         NODE_ENV_ARG: development
-    develop:
-      watch:
-        - action: rebuild
-          path: ./frontend/next
-          target: ./frontend/next/.next/standalone
-          ignore:
-            - ./frontend/next/node_modules/
-        - action: rebuild
-          path: ./frontend/next/package.json
     ports:
       - 4000:4000
     volumes:
-      - /var/lib/next/data
+      - ./frontend/next:/app
+      - /app/node_modules
+      - /app/.next
     restart: always
-
-  # nginx-proxy:
-  #   image: nginxproxy/nginx-proxy
-  #   ports:
-  #     - 80:80
-  #     - 443:443
-  #   networks:
-  #     custom:
-  #   volumes:
-  #     - /var/run/docker.sock:/tmp/docker.sock:ro
-  #     - ./devcerts:/etc/nginx/certs
 
 volumes:
   mysql-data:
-

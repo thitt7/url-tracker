@@ -1,41 +1,38 @@
 FROM node:18-alpine AS base
 
-# Define build arguments
-ARG ENV_FILE
-ARG NODE_ENV_ARG
-
-FROM base AS deps
+# Install dependencies only when needed
+FROM base as deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY frontend/next/package*.json ./
 RUN npm install --omit-dev
 
-# Stage 2: Build
+FROM base AS dev
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY frontend/next/package*.json ./
+COPY frontend/next ./
+
+# Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY frontend/next ./
 
-# Manually copy over env files
-COPY ${ENV_FILE} .env
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN npm run build
 
-# Stage 3: Production image
+# Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV = ${NODE_ENV_ARG}
-ENV NEXT_TELEMETRY_DISABLED = 1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
-
-# Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
 
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/next.config.mjs ./next.config.mjs
@@ -45,7 +42,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
 
 EXPOSE 4000
-ENV PORT = 4000
-ENV DOCKER_ENV = true
+ENV PORT=4000
 
 CMD HOSTNAME="0.0.0.0" node server.js

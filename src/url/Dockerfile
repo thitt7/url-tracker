@@ -19,6 +19,3 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/src/out .
 ENTRYPOINT [ "dotnet", "url.dll" ]
-
-# Set DOCKER environment variable
-ENV DOCKER_ENV = true

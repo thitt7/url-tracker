@@ -44,6 +44,6 @@ jobs:
       with:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
     - name: Save DigitalOcean kubeconfig
-      run: doctl kubernetes cluster kubeconfig save url-tracker-cluster
+      run: doctl kubernetes cluster kubeconfig save url-tracker-prod
     - name: Restart kubernetes deployment
       run: kubectl rollout restart deployment dotnet

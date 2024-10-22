@@ -21,4 +21,4 @@ COPY --from=build /app/src/out .
 ENTRYPOINT [ "dotnet", "url.dll" ]
 
 # Set DOCKER environment variable
-ENV DOCKER_ENV=true
+ENV DOCKER_ENV = true

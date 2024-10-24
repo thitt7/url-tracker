@@ -7,32 +7,14 @@ using Polly;
 
 Console.WriteLine("-------PROGRAM FILE-------");
 
-string dockerEnv = Environment.GetEnvironmentVariable("DOCKER_ENV");
-string DOMAIN = null;
-string PORT = null;
-string MYSQL_DATABASE= null;
-string MYSQL_ROOT_PASSWORD = null;
+string DOMAIN = Environment.GetEnvironmentVariable("DOMAIN");
+string PORT = Environment.GetEnvironmentVariable("NEXT_SERVER_PORT");
+string MYSQL_DATABASE = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
+string MYSQL_ROOT_PASSWORD = Environment.GetEnvironmentVariable("MYSQL_ROOT_PASSWORD");
 string connectionString = null;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
-
-if (!string.IsNullOrEmpty(dockerEnv))
-{ DotEnv.Load(); }
-else
-{
-    DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] {"../../.env"}));
-    MYSQL_DATABASE = EnvReader.GetStringValue("MYSQL_DATABASE");
-    MYSQL_ROOT_PASSWORD = EnvReader.GetStringValue("MYSQL_ROOT_PASSWORD");
-    connectionString = $"Server=127.0.0.1;Port=3306;Database={MYSQL_DATABASE};User=root;Password={MYSQL_ROOT_PASSWORD}";
-    builder.Configuration["ConnectionStrings:DefaultConnection"] = connectionString;
-}
-
-try {
-    DOMAIN = EnvReader.GetStringValue("DOMAIN");
-    PORT = EnvReader.GetStringValue("NEXT_SERVER_PORT");
-}
-catch (Exception ex) {Console.WriteLine($"ERROR LOADING DOTENV: {ex.Message}");}
 
 // var environmentVariables = Environment.GetEnvironmentVariables();
 // foreach (System.Collections.DictionaryEntry entry in environmentVariables)

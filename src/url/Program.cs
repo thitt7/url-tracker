@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using URLService.Data;
 using URLService.Services;
-using dotenv.net;
-using dotenv.net.Utilities;
 using Polly;
 
 Console.WriteLine("-------PROGRAM FILE-------");

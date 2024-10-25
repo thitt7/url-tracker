@@ -38,8 +38,9 @@ jobs:
         file: ${{ env.DOCKERFILE }}
         push: true
         tags: ${{ env.REGISTRY_IMAGE }}:latest
-        build-args: |
-          ENV_FILE=${{ secrets.ENV_FILE }}
+        # build-args: |
+        #   ENV_FILE=.env
+        #   NODE_ENV_ARG=production
 
     - name: Install doctl
       uses: digitalocean/action-doctl@v2

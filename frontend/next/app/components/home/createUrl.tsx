@@ -18,13 +18,7 @@ const CreateUrlForm = () => {
 
   const disabledProp = {disabled: isUrl && isVerified ? false : true};
 
-  console.log('API URL ENV VAR IN CLIENT: ', process.env.NEXT_PUBLIC_API_URL)
-
-  // function isValidURL(url: string) {
-  //   const urlRegex = /^(https?:\/\/)?([\w\d.-]+)\.([a-z]{2,})(:\d{1,5})?([\/\w.-]*)*\/?$/i;
-
-  //   return urlRegex.test(url);
-  // }
+  console.log('API URL', `${process.env.NEXT_PUBLIC_API_URL}/api/urls`)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isURL(event.target.value)) {

@@ -10,7 +10,7 @@ const getUrl = async (id: string) => {
             URL = `http://dotnet-clusterip:${process.env.DOTNET_PORT}/api/urls/${id}`
         } else {
             console.log('in docker')
-            URL = `https://api.${process.env.DOMAIN}/api/urls/${id}`
+            URL = `https://api.${process.env.NEXT_PUBLIC_DOMAIN}/api/urls/${id}`
         }
 
         const res = await fetch(URL)

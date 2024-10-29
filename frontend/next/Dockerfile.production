@@ -19,8 +19,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY frontend/next ./
 
-ARG ENV_FILE
-RUN echo "$ENV_FILE" > .env
+# ARG ENV_FILE
+# RUN echo "$ENV_FILE" > .env
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN npm run build
@@ -29,12 +29,12 @@ RUN npm run build
 FROM base AS runner
 
 # Declare the build argument here
-ARG ENV_FILE
+# ARG ENV_FILE
 
 WORKDIR /app
 
 # Create the .env file from the ENV_FILE argument
-RUN echo "$ENV_FILE" > .env
+# RUN echo "$ENV_FILE" > .env
 
 ENV NEXT_TELEMETRY_DISABLED=1
 

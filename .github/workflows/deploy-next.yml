@@ -39,7 +39,11 @@ jobs:
         push: true
         tags: ${{ env.REGISTRY_IMAGE }}:latest
         build-args: |
-          ENV_FILE=${{ secrets.ENV_FILE }}
+          BACKEND=${{ secrets.BACKEND }}
+          DOTNET_PORT=${{ secrets.DOTNET_PORT }}
+          NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_SERVER_PORT=${{ secrets.NEXT_SERVER_PORT }}
+          NEXT_PUBLIC_DOMAIN=${{ secrets.NEXT_PUBLIC_DOMAIN}}
 
     - name: Install doctl
       uses: digitalocean/action-doctl@v2

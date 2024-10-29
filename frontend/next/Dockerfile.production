@@ -19,8 +19,20 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY frontend/next ./
 
-# ARG ENV_FILE
-# RUN echo "$ENV_FILE" > .env
+# Declare build arguments
+ARG BACKEND
+ARG DOTNET_PORT
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_SERVER_PORT
+ARG NEXT_PUBLIC_DOMAIN
+
+# Set the build arguments as environment variables
+ENV BACKEND=${BACKEND}
+ENV DOTNET_PORT=${DOTNET_PORT}
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV NEXT_SERVER_PORT=${NEXT_SERVER_PORT}
+ENV NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN}
+
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN npm run build
@@ -28,13 +40,7 @@ RUN npm run build
 # Production image, copy all the files and run next
 FROM base AS runner
 
-# Declare the build argument here
-# ARG ENV_FILE
-
 WORKDIR /app
-
-# Create the .env file from the ENV_FILE argument
-# RUN echo "$ENV_FILE" > .env
 
 ENV NEXT_TELEMETRY_DISABLED=1
 

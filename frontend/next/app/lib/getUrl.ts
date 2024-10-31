@@ -13,7 +13,8 @@ const getUrl = async (id: string) => {
             URL = `https://api.${process.env.NEXT_PUBLIC_DOMAIN}/api/urls/${id}`
         }
 
-        const res = await fetch(URL)
+        const res = await fetch(URL, { cache: "no-store" });
+        
         if (!res.ok) {
             throw new Error(`Failed to fetch URL: ${res.status}`)
         }

@@ -3,33 +3,27 @@
 import React, { useState, useEffect } from 'react';
 import { redirect } from 'next/navigation';
 import { Redirect } from './redirectAction';
-// import Redirect from './redirect';
 import asyncDelay from '@lib/asyncDelay';
 import getIpData from '@lib/getIpData';
-// import getIP from '@lib/getIP';
 import { VisitLogDto, UrlDto } from '@Types/DTO';
 
 const Client = ({ Url }: { Url: UrlDto }) => {
 
     const getIP = async (): Promise<any> => {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        console.log('fetched IP: ', data);
-
-        return data['ip'];
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            console.log('fetched IP: ', data);
+            return data['ip'];
+        } catch (error) {
+            console.error('Error fetching IP:', error);
+            throw error;
+        }
     }
 
     useEffect(() => {
 
         (async () => {
-
-            // console.log('running useEffect fn..')
-            // const { trackingId } = Url;
-            // // const ip = await getIP();
-            // await getIP();
-            // // const IpData = await getIpData(ip);
-            // const userAgent = navigator.userAgent;
-            // console.log('userAgent in client component: ', userAgent);
 
             try {
                 console.log('running useEffect fn..')
@@ -51,7 +45,7 @@ const Client = ({ Url }: { Url: UrlDto }) => {
                             method: 'PUT',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(Log)
-                        })
+                        });
                         res.json();
                     } catch (e) {
                         console.error('error adding visit log:', e)
@@ -70,7 +64,6 @@ const Client = ({ Url }: { Url: UrlDto }) => {
 
         return () => { }
     }, [])
-
 
     return (
         <>

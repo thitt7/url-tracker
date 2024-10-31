@@ -5,16 +5,22 @@ const getIpData = async (ip: string): Promise<IpData | null> => {
   let response;
   try {
     response = await fetch(`http://ip-api.com/json/${ip}?fields=continent,country,region,city,isp,org,mobile,proxy`);
+    
+    if (!response.ok) {
+      console.error('Failed to fetch IP data:', response.statusText);
+      return null;
+    }
   } 
   catch (error) {
-    console.error(error);
+    console.error('Fetch error:', error);
+    return null;
   }
 
-  const data = await response?.json();
+  const data = await response.json();
   
   console.log('IP DATA: ', data);
 
-  if (!Object.entries(data).length) {
+  if (!data || !Object.entries(data).length) {
     return null;
   }
 
@@ -24,7 +30,6 @@ const getIpData = async (ip: string): Promise<IpData | null> => {
     region: data.region,
     city: data.city,
     isp: data.isp,
-    // Coordinates?: string;
     org: data.org
   }
   return IpData;

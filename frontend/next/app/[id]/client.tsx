@@ -63,8 +63,8 @@ const Client = ({ Url }: { Url: UrlDto }) => {
                 console.error('Error fetching ip data:', error);
             }
             finally {
-                await asyncDelay(3000);
-                // Redirect(Url.originalURL)
+                // await asyncDelay(3000);
+                Redirect(Url.originalURL)
             }
         })();
 

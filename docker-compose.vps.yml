@@ -1,3 +1,5 @@
+# Load vars for ${...} substitution: run with
+#   docker compose --env-file .env.vps -f docker-compose.vps.yml up -d --build
 services:
   mysql:
     image: mysql:8.0
@@ -24,7 +26,7 @@ services:
       - .env.vps
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ASPNETCORE_URLS: http://+:8001
+      ASPNETCORE_URLS: http://+:${DOTNET_PORT:-8001}
       # Use the Compose service name for the MySQL host.
       ConnectionStrings__DefaultConnection: Server=mysql;Port=3306;Database=${MYSQL_DATABASE};User=${MYSQL_ROOT_USER};Password=${MYSQL_ROOT_PASSWORD}
     depends_on:
@@ -44,6 +46,7 @@ services:
       - .env.vps
     environment:
       NODE_ENV: production
+      PORT: ${NEXT_SERVER_PORT:-4000}
     depends_on:
       - dotnet
     restart: unless-stopped

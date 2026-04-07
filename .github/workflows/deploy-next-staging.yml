@@ -1,0 +1,45 @@
+# Build/push Next image for VPS staging (Docker Hub tag :staging).
+# Requires GitHub secret ENV_FILE_STAGING with the same shape as ENV_FILE (includes NEXT_PUBLIC_* for staging).
+# Does not deploy to Kubernetes.
+
+name: deploy-next-staging
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["staging"]
+    paths:
+      - "frontend/next/**"
+
+env:
+  REGISTRY_IMAGE: thitt7/next
+  DOCKERFILE: frontend/next/Dockerfile
+  IMAGE_TAG: staging
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PW }}
+
+      - name: Create .env for staging build
+        run: echo "${{ secrets.ENV_FILE_STAGING }}" > .env
+
+      - name: Build and push staging image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ${{ env.DOCKERFILE }}
+          push: true
+          tags: ${{ env.REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }}
+          build-args: |
+            ENV_FILE=.env
+            NODE_ENV_ARG=production

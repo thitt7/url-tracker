@@ -1,5 +1,17 @@
-# Load vars for ${...} substitution: run with
-#   docker compose --env-file .env.vps -f docker-compose.vps.yml up -d --build
+# VPS / production deploy: pull-only from Docker Hub (no builds on the server).
+# Build and push images via GitHub Actions; develop locally with docker-compose.yml on your machine.
+#
+# On the Droplet you only need this file, Caddyfile.vps, and .env.vps (no app source clone required).
+#
+# Optional in .env.vps (defaults match staging CI tags):
+#   NEXT_IMAGE=thitt7/next
+#   DOTNET_IMAGE=thitt7/dotnet
+#   IMAGE_TAG=staging
+#
+# Deploy / update:
+#   docker compose --env-file .env.vps -f docker-compose.vps.yml pull
+#   docker compose --env-file .env.vps -f docker-compose.vps.yml up -d
+
 services:
   mysql:
     image: mysql:8.0
@@ -19,9 +31,7 @@ services:
     restart: unless-stopped
 
   dotnet:
-    build:
-      context: .
-      dockerfile: src/url/Dockerfile
+    image: ${DOTNET_IMAGE:-thitt7/dotnet}:${IMAGE_TAG:-staging}
     env_file:
       - .env.vps
     environment:
@@ -35,13 +45,7 @@ services:
     restart: unless-stopped
 
   next:
-    build:
-      context: .
-      dockerfile: frontend/next/Dockerfile
-      target: runner
-      args:
-        ENV_FILE: .env.vps
-        NODE_ENV_ARG: production
+    image: ${NEXT_IMAGE:-thitt7/next}:${IMAGE_TAG:-staging}
     env_file:
       - .env.vps
     environment:
@@ -71,4 +75,3 @@ volumes:
   mysql-data:
   caddy_data:
   caddy_config:
-

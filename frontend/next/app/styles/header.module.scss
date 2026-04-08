@@ -1,0 +1,23 @@
+@use 'variables' as *;
+
+#toolbar {
+    max-width: $max-width-lg;
+    margin: auto;
+    width: 100%;
+
+    .navItems {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 5px;
+
+        button {
+            background-color: $primary !important;
+            padding: 5px 10px !important;
+          }
+    }
+}
+
+#appBar {
+    position: static;
+    background: none;
+}

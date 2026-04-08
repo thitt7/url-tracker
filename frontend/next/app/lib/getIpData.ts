@@ -12,8 +12,7 @@ const getIpData = async (ip: string): Promise<IpData | null> => {
 
   const data = await response?.json();
   
-  console.log('IP ADDRESS: ', ip)
-  console.log('IP DATA: ', data)
+  console.log('IP DATA: ', data);
 
   if (!Object.entries(data).length) {
     return null;

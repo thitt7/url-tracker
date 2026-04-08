@@ -1,12 +1,6 @@
-# networks:
-#   custom:
-#     ipam:
-#       config:
-#         - subnet: 10.5.0.0/16
-
 services:
   mysql:
-    image: mysql:8.0
+    image: mysql:latest
     container_name: ${DB_CONTAINER_NAME}
     environment:
       MYSQL_ROOT_USER: $MYSQL_ROOT_USER}
@@ -14,21 +8,26 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - 3306:3306
-    volumes:
-      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     restart: always
 
   dotnet:
     image: dotnet:latest
     env_file:
-      - .env
+      - .env.local
     build:
       context: .
       dockerfile: src/url/Dockerfile
     ports:
       - 8001:8001
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8001
@@ -37,13 +36,26 @@ services:
   next:
     image: next:latest
     env_file:
-      - .env
-    # environment:
+      - .env.local
+    environment:
+      - NODE_ENV=development
     #   - VIRTUAL_HOST=api.url-tracker.com
-    #   - VIRTUAL_PORT=4000
     build:
       context: .
       dockerfile: frontend/next/Dockerfile
+      target: development
+      args:
+        ENV_FILE: .env.local
+        NODE_ENV_ARG: development
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend/next
+          target: ./frontend/next/.next/standalone
+          ignore:
+            - ./frontend/next/node_modules/
+        - action: rebuild
+          path: ./frontend/next/package.json
     ports:
       - 4000:4000
     volumes:
@@ -63,3 +75,4 @@ services:
 
 volumes:
   mysql-data:
+

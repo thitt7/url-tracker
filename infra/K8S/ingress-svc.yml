@@ -4,6 +4,8 @@ metadata:
   name: ingress-svc
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
+    service.beta.kubernetes.io/do-loadbalancer-tls-passthrough: "true"
   labels:
     name: ingress-svc
 spec:

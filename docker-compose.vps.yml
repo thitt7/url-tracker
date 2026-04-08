@@ -1,0 +1,77 @@
+# VPS / production deploy: pull-only from Docker Hub (no builds on the server).
+# Build and push images via GitHub Actions; develop locally with docker-compose.yml on your machine.
+#
+# On the Droplet you only need this file, Caddyfile.vps, and .env.vps (no app source clone required).
+#
+# Optional in .env.vps (defaults match staging CI tags):
+#   NEXT_IMAGE=thitt7/next
+#   DOTNET_IMAGE=thitt7/dotnet
+#   IMAGE_TAG=staging
+#
+# Deploy / update:
+#   docker compose --env-file .env.vps -f docker-compose.vps.yml pull
+#   docker compose --env-file .env.vps -f docker-compose.vps.yml up -d
+
+services:
+  mysql:
+    image: mysql:8.0
+    env_file:
+      - .env.vps
+    environment:
+      # MySQL image only requires MYSQL_ROOT_PASSWORD + (optional) MYSQL_DATABASE.
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  dotnet:
+    image: ${DOTNET_IMAGE:-thitt7/dotnet}:${IMAGE_TAG:-staging}
+    env_file:
+      - .env.vps
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:${DOTNET_PORT:-8001}
+      # Use the Compose service name for the MySQL host.
+      ConnectionStrings__DefaultConnection: Server=mysql;Port=3306;Database=${MYSQL_DATABASE};User=${MYSQL_ROOT_USER};Password=${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  next:
+    image: ${NEXT_IMAGE:-thitt7/next}:${IMAGE_TAG:-staging}
+    env_file:
+      - .env.vps
+    environment:
+      NODE_ENV: production
+      PORT: ${NEXT_SERVER_PORT:-4000}
+    depends_on:
+      - dotnet
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    env_file:
+      - .env.vps
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile.vps:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - next
+      - dotnet
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
+  caddy_data:
+  caddy_config:

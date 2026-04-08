@@ -1,0 +1,13 @@
+@use 'variables' as *;
+
+#create {
+    max-width: $max-width-md;
+    margin: auto;
+    width: 100%;
+
+    #form {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+    }
+}

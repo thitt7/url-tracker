@@ -2,7 +2,7 @@
   email {env.CADDY_EMAIL}
 }
 
-{env.STAGING_DOMAIN} {
+{env.NEXT_PUBLIC_DOMAIN} {
   encode gzip
 
   # Route API traffic to the .NET container (ports from .env.vps: DOTNET_PORT, NEXT_SERVER_PORT).

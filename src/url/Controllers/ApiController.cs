@@ -1,5 +1,11 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
+namespace URLService.Controllers;
+
+[ApiController]
 [Route("api")]
-public class ApiController : Controller
+public class ApiController : ControllerBase
 {
     [HttpGet("private")]
     [Authorize]

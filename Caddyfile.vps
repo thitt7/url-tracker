@@ -1,16 +1,15 @@
 {
-  email {env.CADDY_EMAIL}
+  email {$CADDY_EMAIL}
 }
 
-{env.NEXT_PUBLIC_DOMAIN} {
+{$DOMAIN:staging.url-tracker.com} {
   encode gzip
 
   # Route API traffic to the .NET container (ports from .env.vps: DOTNET_PORT, NEXT_SERVER_PORT).
   handle /api/* {
-    reverse_proxy dotnet:{env.DOTNET_PORT}
+    reverse_proxy dotnet:{$DOTNET_PORT}
   }
 
   # Everything else goes to Next.js.
-  reverse_proxy next:{env.NEXT_SERVER_PORT}
+  reverse_proxy next:{$NEXT_SERVER_PORT}
 }
-

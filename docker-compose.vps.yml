@@ -59,6 +59,8 @@ services:
     image: caddy:2
     env_file:
       - .env.vps
+    environment:
+      - NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN}
     ports:
       - "80:80"
       - "443:443"

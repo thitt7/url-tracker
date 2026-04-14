@@ -73,27 +73,28 @@ CMD HOSTNAME="0.0.0.0" node server.js
 # development stage w/ dev server
 FROM node:18-alpine AS development
 
-# Define build arguments
 ARG ENV_FILE
 ARG NODE_ENV_ARG
 
 WORKDIR /app
+
+# 1. Copy only package files first (better caching)
 COPY frontend/next/package*.json ./
 
-# RUN \
-#   if [ -f yarn.lock ]; then yarn install --production; \
-#   elif [ -f package-lock.json ]; then npm install --omit-dev; \
-#   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install --prod; \
-#   else echo "dev install lockfile not found." && exit 1; \
-#   fi
-RUN npm install -g pnpm
-RUN pnpm install --prod
+# 2. Install ALL dependencies (including dev)
+RUN npm install
 
+# 3. Copy the rest of the app (node_modules excluded via .dockerignore)
 COPY frontend/next ./
 
+# 4. Copy env file
 COPY ${ENV_FILE} .env
-ENV NODE_ENV ${NODE_ENV_ARG}
+
+# 5. Set environment
+ENV NODE_ENV=${NODE_ENV_ARG}
+ENV NEXT_TELEMETRY_DISABLED=1
 
 EXPOSE 4000
-# CMD ["npm", "run", "dev"]
-CMD ["pnpm", "dev"]
+
+# 6. Run dev server (no runtime installs anymore)
+CMD ["npm", "run", "dev"]

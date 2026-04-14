@@ -1,4 +1,9 @@
-node_modules
+# ignore all node_modules everywhere
+**/node_modules
+
+# ignore next build output
+**/.next
+
 npm-debug.log
 Dockerfile
 .cache

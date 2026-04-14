@@ -1,5 +1,5 @@
 # Stage 2: production image stage
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 # Define build arguments
 ARG ENV_FILE
@@ -71,7 +71,7 @@ CMD HOSTNAME="0.0.0.0" node server.js
 
 
 # development stage w/ dev server
-FROM node:18-alpine AS development
+FROM node:20-alpine AS development
 
 ARG ENV_FILE
 ARG NODE_ENV_ARG

@@ -5,7 +5,7 @@ FROM node:20-alpine AS base
 ARG ENV_FILE
 ARG NODE_ENV_ARG
 
-FROM base as deps
+FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY frontend/next/package*.json ./

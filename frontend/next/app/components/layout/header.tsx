@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import styles from '@styles/header.module.scss'
 
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -18,42 +18,40 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
+import MenuIcon from '@mui/icons-material/Menu'
 
 import { useUser } from '@auth0/nextjs-auth0/client'
 
 const Header = (props: any) => {
-    const isMobile = useMediaQuery('(max-width:480px)')
     const isTablet = useMediaQuery('(max-width:768px)')
-    const isDesktop = useMediaQuery('(min-width:768px)')
-
     const { window } = props
+
     const [mobileOpen, setMobileOpen] = useState(false)
     const headerRef = useRef<HTMLElement>(null)
-    const navItems: any[] = []
 
-    const { user, error, isLoading } = useUser()
+    const { user, isLoading } = useUser()
 
-    const handleDrawerToggle = (e: React.MouseEvent) => {
-        setMobileOpen((prevState: any) => !prevState)
+    const handleDrawerToggle = () => {
+        setMobileOpen((prev) => !prev)
     }
 
     useEffect(() => {
-        headerRef.current!.setAttribute('data-height', document.querySelector('header')?.offsetHeight.toString()!)
-    })
-
-    useEffect(() => {
-        if (user) {
+        if (headerRef.current) {
+            const height = headerRef.current.offsetHeight
+            headerRef.current.setAttribute('data-height', height.toString())
         }
-    }, [user])
+    }, [])
+
+    const navItems: string[] = []
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             <List>
-                {navItems.map((item: any) => (
+                {navItems.map((item) => (
                     <Link href={`/${item.toLowerCase()}`} key={item}>
-                        <ListItem key={item} disablePadding>
+                        <ListItem disablePadding>
                             <ListItemButton sx={{ textAlign: 'center' }}>
-                                <ListItemText primary={item} sx={{ fontSize: '1.5rem' }} />
+                                <ListItemText primary={item} />
                             </ListItemButton>
                         </ListItem>
                     </Link>
@@ -66,62 +64,71 @@ const Header = (props: any) => {
 
     return (
         <header ref={headerRef}>
-            <Box className="nav" sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
+
                 <AppBar component="nav" color="inherit" id={styles.appBar}>
-                    <Toolbar id={styles['toolbar']}>
-                        {isTablet ? (
+                    <Toolbar id={styles.toolbar}>
+                        {/* Mobile */}
+                        {isTablet && (
                             <>
                                 <Link href={`/`}>
                                     <img src="/logo-header.png" alt="URL Tracker" />
                                 </Link>
+
                                 <IconButton
-                                    disableRipple
-                                    aria-label="open drawer"
+                                    edge="end"
                                     onClick={handleDrawerToggle}
-                                ></IconButton>
+                                >
+                                    <MenuIcon />
+                                </IconButton>
                             </>
-                        ) : (
-                            <></>
                         )}
+
+                        {/* Desktop title */}
                         <Typography
                             variant="h6"
-                            component="div"
                             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                         >
                             <Link href={`/`}>URL Tracker</Link>
                         </Typography>
-                        {(!isLoading && !user) ?? (
-                            <Box
-                                sx={{ display: { xs: 'none', sm: 'block', display: 'flex' } }}
-                                className={styles.navItems}
-                            >
-                                <Link href={`auth/login`}>
-                                    <Button sx={{ color: '#fff' }}>Register</Button>
-                                </Link>
-                                <Link href={`auth/login`}>
-                                    <Button sx={{ color: '#fff' }}>Log in</Button>
-                                </Link>
-                            </Box>
-                        )}
-                        {!isLoading && user ? (
-                            <Box
-                                sx={{ display: { xs: 'none', sm: 'block', display: 'flex' } }}
-                                className={styles.navItems}
-                            >
-                                {user.name && user.picture && <Avatar alt={user.name} src={user.picture} />}
-                                <Link href={`/auth/logout`}>
-                                    <Button sx={{ color: '#fff' }}>Log out</Button>
-                                </Link>
-                            </Box>
-                        ) : (
-                            <></>
+
+                        {/* Auth UI */}
+                        {!isLoading && (
+                            user ? (
+                                <Box
+                                    sx={{ display: 'flex', gap: 2, alignItems: 'center' }}
+                                    className={styles.navItems}
+                                >
+                                    {user.name && user.picture && (
+                                        <Avatar alt={user.name} src={user.picture} />
+                                    )}
+
+                                    <Link href={`/auth/logout`}>
+                                        <Button sx={{ color: '#fff' }}>Log out</Button>
+                                    </Link>
+                                </Box>
+                            ) : (
+                                <Box
+                                    sx={{ display: 'flex', gap: 2 }}
+                                    className={styles.navItems}
+                                >
+                                    <Link href={`/auth/login`}>
+                                        <Button sx={{ color: '#fff' }}>Register</Button>
+                                    </Link>
+
+                                    <Link href={`/auth/login`}>
+                                        <Button sx={{ color: '#fff' }}>Log in</Button>
+                                    </Link>
+                                </Box>
+                            )
                         )}
                     </Toolbar>
                 </AppBar>
+
+                {/* Drawer */}
                 <Box component="nav">
                     <Drawer
-                        className="hamburger-drawer"
                         container={container}
                         variant="temporary"
                         anchor="bottom"
@@ -129,8 +136,10 @@ const Header = (props: any) => {
                         onClose={handleDrawerToggle}
                         ModalProps={{ keepMounted: true }}
                         sx={{
-                            // top: `${headerHeight}px`,
-                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '100%' },
+                            '& .MuiDrawer-paper': {
+                                boxSizing: 'border-box',
+                                width: '100%',
+                            },
                         }}
                     >
                         {drawer}

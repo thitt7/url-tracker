@@ -10,9 +10,9 @@ export default function AuthHandler({ children }: { children: React.ReactNode })
     const router = useRouter()
     console.log('user: ', user, error, isLoading)
     useEffect(() => {
-        if (!isLoading && !user) {
-            router.push('/api/auth/login')
-        }
+        // if (!isLoading && !user) {
+        //     router.push('/api/auth/login')
+        // }
     })
     return <Fragment>{children}</Fragment>
 }

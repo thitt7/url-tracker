@@ -16,9 +16,9 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
-import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
 import MenuIcon from '@mui/icons-material/Menu'
+import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded'
 
 import { useUser } from '@auth0/nextjs-auth0/client'
 
@@ -76,10 +76,7 @@ const Header = (props: any) => {
                                     <img src="/logo-header.png" alt="URL Tracker" />
                                 </Link>
 
-                                <IconButton
-                                    edge="end"
-                                    onClick={handleDrawerToggle}
-                                >
+                                <IconButton edge="end" onClick={handleDrawerToggle}>
                                     <MenuIcon />
                                 </IconButton>
                             </>
@@ -93,35 +90,64 @@ const Header = (props: any) => {
                             <Link href={`/`}>URL Tracker</Link>
                         </Typography>
 
-                        {/* Auth UI */}
+                        {/* Auth Section */}
                         {!isLoading && (
-                            user ? (
-                                <Box
-                                    sx={{ display: 'flex', gap: 2, alignItems: 'center' }}
-                                    className={styles.navItems}
-                                >
-                                    {user.name && user.picture && (
-                                        <Avatar alt={user.name} src={user.picture} />
-                                    )}
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 1.5,
+                                    minWidth: 140, // keeps layout consistent
+                                    justifyContent: 'flex-end',
+                                }}
+                                className={styles.navItems}
+                            >
+                                {user ? (
+                                    <>
+                                        <Typography
+                                            variant="body1"
+                                            sx={{ whiteSpace: 'nowrap' }}
+                                        >
+                                            {user.name}
+                                        </Typography>
 
-                                    <Link href={`/auth/logout`}>
-                                        <Button sx={{ color: '#fff' }}>Log out</Button>
-                                    </Link>
-                                </Box>
-                            ) : (
-                                <Box
-                                    sx={{ display: 'flex', gap: 2 }}
-                                    className={styles.navItems}
-                                >
-                                    <Link href={`/auth/login`}>
-                                        <Button sx={{ color: '#fff' }}>Register</Button>
-                                    </Link>
+                                        <Avatar
+                                            alt={user.name || 'User'}
+                                            src={user.picture || ''}
+                                            sx={{ width: 32, height: 32 }}
+                                        />
+                                    </>
+                                ) : (
+                                    <Link href="/auth/login" style={{ textDecoration: 'none' }}>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 1.5,
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <Typography variant="body1">
+                                                Sign in
+                                            </Typography>
 
-                                    <Link href={`/auth/login`}>
-                                        <Button sx={{ color: '#fff' }}>Log in</Button>
+                                            <Box
+                                                sx={{
+                                                    width: 32,
+                                                    height: 32,
+                                                    borderRadius: '50%',
+                                                    border: '1px solid rgba(0,0,0,0.3)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                }}
+                                            >
+                                                <PersonAddRoundedIcon fontSize="small" />
+                                            </Box>
+                                        </Box>
                                     </Link>
-                                </Box>
-                            )
+                                )}
+                            </Box>
                         )}
                     </Toolbar>
                 </AppBar>

@@ -1,57 +1,42 @@
-# Stage 2: production image stage
+# Shared base: Alpine + libc6-compat + workdir
 FROM node:20-alpine AS base
-
-# Define build arguments
-ARG ENV_FILE
-ARG NODE_ENV_ARG
-
-FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY frontend/next/package*.json ./
 
-# RUN \
-#   if [ -f yarn.lock ]; then yarn install --production; \
-#   elif [ -f package-lock.json ]; then npm install --omit-dev; \
-#   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install --prod; \
-#   else echo "prod install lockfile not found." && exit 1; \
-#   fi
-RUN npm install -g pnpm
-RUN pnpm install --prod
+# One dependency install, reused by builder and development (separate final images)
+FROM base AS deps
+COPY frontend/next/package.json frontend/next/package-lock.json ./
+RUN npm ci
 
-# Stage 2: Build
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Production build (standalone)
+FROM deps AS builder
+ARG ENV_FILE
 COPY frontend/next ./
-
-# Manually copy over env files
 COPY ${ENV_FILE} .env
+RUN npm run build
 
-# build project conditionally
-# RUN \
-#   if [ -f yarn.lock ]; then yarn install --production; \
-#   elif [ -f package-lock.json ]; then npm run build; \
-#   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
-#   else echo "Lockfile not found." && exit 1; \
-#   fi
-RUN npm install -g pnpm
-RUN pnpm install --prod
-RUN pnpm run build
+# Dev server in Docker (compose: target development)
+FROM deps AS development
+ARG ENV_FILE
+ARG NODE_ENV_ARG
+COPY frontend/next ./
+COPY ${ENV_FILE} .env
+ENV NODE_ENV=${NODE_ENV_ARG}
+ENV NEXT_TELEMETRY_DISABLED=1
+EXPOSE 4000
+CMD ["npm", "run", "dev"]
 
-# Stage 3: Production image
+# Production runtime — last stage = default when no --target
 FROM base AS runner
-WORKDIR /app
-
-ENV NODE_ENV ${NODE_ENV_ARG}
-ENV NEXT_TELEMETRY_DISABLED 1
+ARG NODE_ENV_ARG=production
+ENV NODE_ENV=${NODE_ENV_ARG}
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 
-# Set the correct permission for prerender cache
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
@@ -63,38 +48,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
 
 EXPOSE 4000
-ENV PORT 4000
+ENV PORT=4000
 ENV DOCKER_ENV=true
 
-# CMD ["node", "server.js"]
 CMD HOSTNAME="0.0.0.0" node server.js
-
-
-# development stage w/ dev server
-FROM node:20-alpine AS development
-
-ARG ENV_FILE
-ARG NODE_ENV_ARG
-
-WORKDIR /app
-
-# 1. Copy only package files first (better caching)
-COPY frontend/next/package*.json ./
-
-# 2. Install ALL dependencies (including dev)
-RUN npm install
-
-# 3. Copy the rest of the app (node_modules excluded via .dockerignore)
-COPY frontend/next ./
-
-# 4. Copy env file
-COPY ${ENV_FILE} .env
-
-# 5. Set environment
-ENV NODE_ENV=${NODE_ENV_ARG}
-ENV NEXT_TELEMETRY_DISABLED=1
-
-EXPOSE 4000
-
-# 6. Run dev server (no runtime installs anymore)
-CMD ["npm", "run", "dev"]

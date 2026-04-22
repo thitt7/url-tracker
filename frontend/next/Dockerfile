@@ -49,8 +49,7 @@ USER nextjs
 
 EXPOSE 4000
 ENV PORT=4000
+ENV HOSTNAME "0.0.0.0"
 ENV DOCKER_ENV=true
 
-# Next standalone: hostname = process.env.HOSTNAME || '0.0.0.0'. Docker sets HOSTNAME to the
-# container hostname, so the server binds incorrectly unless we unset it before starting Node.
-CMD ["sh", "-c", "unset HOSTNAME; exec node server.js"]
+CMD ["node", "server.js"]

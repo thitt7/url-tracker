@@ -1,6 +1,9 @@
 import { auth0 } from "@lib/auth0";
 
-export async function proxy(request: Request) { // Note that proxy uses the standard Request type
+export async function proxy(request: Request) {
+  const session = await auth0.getSession();
+  console.log('session: ', session);
+  
   return await auth0.middleware(request);
 }
 

@@ -3,7 +3,7 @@
 import React, {useState} from 'react';
 import { redirect } from 'next/navigation';
 import TextField from '@mui/material/TextField';
-import { Button, Checkbox } from '@mui/material';
+import { Button } from '@mui/material';
 import isURL from 'validator/es/lib/isURL';
 import {createUrlDto} from '@Types/DTO';
 
@@ -12,7 +12,6 @@ import styles from '@styles/home.module.scss';
 const CreateUrlForm = () => {
 
   const [formData, setformData] = useState<createUrlDto>();
-  const [helperText, setHelperText] = useState('*You must enter your email and at least one preference');
   const [isVerified, setIsVerified] = useState(true);
   const [isUrl, setIsUrl] = useState(false);
 
@@ -64,7 +63,6 @@ const CreateUrlForm = () => {
   // const setVerified = (verified: boolean): void => { setIsVerified(verified) }
 
   return (
-    <section id={styles['create']}>
       <form id={styles['form']} action={createUrl}>
         {/* <Recaptcha setVerified={setVerified}/> */}
         <TextField
@@ -86,7 +84,6 @@ const CreateUrlForm = () => {
             Create URL
         </Button>
       </form>
-    </section>
   )
 }
 

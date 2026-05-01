@@ -11,10 +11,12 @@ env:
   REGISTRY_IMAGE: thitt7/next
   DOCKERFILE: frontend/next/Dockerfile
   IMAGE_TAG: staging
+  COMPOSE_CMD: docker compose --env-file .env.vps -f docker-compose.vps.yml
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -56,10 +58,14 @@ jobs:
             cd /url-tracker
 
             echo "Pulling latest images..."
-            docker compose -f docker-compose.vps.yml pull
+            OUTPUT=$($COMPOSE_CMD pull)
 
-            echo "Restarting containers..."
-            docker compose -f docker-compose.vps.yml up -d --remove-orphans
+            if echo "$OUTPUT" | grep -q "Downloaded newer image"; then
+              echo "New image found, deploying..."
+              $COMPOSE_CMD up -d --remove-orphans
+            else
+              echo "No changes, skipping restart."
+            fi
 
             echo "Cleaning up old images..."
             docker image prune -f

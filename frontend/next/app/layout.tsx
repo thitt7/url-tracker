@@ -14,7 +14,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
     title: 'URL Tracker',
-    description: 'Generate and track your own custom links!',
+    description: 'Generate, shorten, and track your own custom links!',
     icons: {
         icon: '/logo.png',
         shortcut: '/logo.png',

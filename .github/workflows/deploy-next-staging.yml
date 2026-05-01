@@ -3,9 +3,9 @@ name: deploy-next-staging
 on:
   workflow_dispatch:
   push:
-    branches: ["staging"]
-    paths:
-      - "frontend/next/**"
+    branches: [ "staging" ]
+    paths: 
+    - 'frontend/next/**'
 
 env:
   REGISTRY_IMAGE: thitt7/next

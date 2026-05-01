@@ -3,9 +3,9 @@ name: deploy-dotnet-staging
 on:
   workflow_dispatch:
   push:
-    branches: ["staging"]
-    paths:
-      - "src/url/**"
+    branches: [ "staging" ]
+    paths: 
+    - 'src/url/**'
 
 env:
   REGISTRY_IMAGE: thitt7/dotnet

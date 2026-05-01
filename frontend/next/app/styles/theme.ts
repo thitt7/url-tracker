@@ -16,7 +16,16 @@ export const getTheme = (mode: 'light' | 'dark') =>
       },
     },
     typography: {
-      fontFamily: 'Inter, sans-serif',
+      fontFamily: 'var(--font-space-grotesk), sans-serif',
+      h1: {
+        fontWeight: 500,
+      },
+      h2: {
+        fontWeight: 400,
+      },
+      h3: {
+        fontWeight: 400,
+      },
     },
     components: {
       MuiButton: {

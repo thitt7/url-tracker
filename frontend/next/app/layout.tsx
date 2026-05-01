@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Space_Grotesk } from 'next/font/google'
 import Box from '@mui/material/Box'
 import Header from '@components/layout/header'
 import Footer from '@components/layout/footer'
@@ -7,7 +7,10 @@ import './styles/globals.scss'
 import AuthHandler from './components/authHandler'
 import ClientProviders from './clientProviders'
 
-const inter = Inter({ subsets: ['latin'] })
+const spaceGrotesk = Space_Grotesk({
+    subsets: ['latin'],
+    variable: '--font-space-grotesk',
+})
 
 export const metadata: Metadata = {
     title: 'URL Tracker',
@@ -26,7 +29,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={inter.className}>
+            <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable}`}>
                 <ClientProviders>
                     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
                         <Header />

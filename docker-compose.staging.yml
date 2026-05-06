@@ -6,7 +6,7 @@ services:
   mysql:
     image: mysql:8.0
     env_file:
-      - .env.vps
+      - .env.staging
     environment:
       # MySQL image only requires MYSQL_ROOT_PASSWORD + (optional) MYSQL_DATABASE.
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -23,7 +23,7 @@ services:
   dotnet:
     image: ${DOTNET_IMAGE:-thitt7/dotnet}:${IMAGE_TAG:-staging}
     env_file:
-      - .env.vps
+      - .env.staging
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://+:${DOTNET_PORT:-8001}
@@ -37,7 +37,7 @@ services:
   next:
     image: ${NEXT_IMAGE:-thitt7/next}:${IMAGE_TAG:-staging}
     env_file:
-      - .env.vps
+      - .env.staging
     environment:
       NODE_ENV: production
       PORT: ${NEXT_SERVER_PORT:-4000}
@@ -48,7 +48,7 @@ services:
   caddy:
     image: caddy:2
     env_file:
-      - .env.vps
+      - .env.staging
     environment:
       - NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN}
     ports:

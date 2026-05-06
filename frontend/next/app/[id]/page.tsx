@@ -24,8 +24,8 @@ export const metadata: Metadata = {
 //   },
 // };
 
-const OriginalUrl = async ({ params }: { params: { id: string } }) => {
-  const {id: trackingId} = params;
+const OriginalUrl = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const {id: trackingId} = await params;
   const url: UrlDto = await getUrl(trackingId);
   const {originalURL} = url;
 

@@ -9,8 +9,8 @@ import styles from '@styles/tracking.module.scss';
 
 const IS_DOCKER = process.env.DOCKER_ENV === 'true';
 
-const TrackingPage = async ({ params }: { params: { id: string } }) => {
-  const { id: trackingId } = params;
+const TrackingPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id: trackingId } = await params;
   const url = await getUrl(trackingId);
   console.log('URL: ', url)
 

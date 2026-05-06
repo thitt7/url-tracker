@@ -1,13 +1,3 @@
-# VPS / production deploy: pull-only from Docker Hub (no builds on the server).
-# Build and push images via GitHub Actions; develop locally with docker-compose.yml on your machine.
-#
-# On the Droplet you only need this file, Caddyfile.vps, and .env.vps (no app source clone required).
-#
-# Optional in .env.vps (defaults match staging CI tags):
-#   NEXT_IMAGE=thitt7/next
-#   DOTNET_IMAGE=thitt7/dotnet
-#   IMAGE_TAG=staging
-#
 # Deploy / update:
 #   docker compose --env-file .env.vps -f docker-compose.vps.yml pull
 #   docker compose --env-file .env.vps -f docker-compose.vps.yml up -d

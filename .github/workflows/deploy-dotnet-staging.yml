@@ -48,18 +48,19 @@ jobs:
           username: root
           key: ${{ secrets.VPS_SSH_KEY }}
           passphrase: ${{ secrets.VPS_PASSPHRASE }}
+
+          envs: REGISTRY_IMAGE,IMAGE_TAG
+
           script: |
+            IMAGE="${REGISTRY_IMAGE}:${IMAGE_TAG}"
+
             cd /url-tracker
 
-            echo "Pulling latest images..."
-            OUTPUT=$($COMPOSE_CMD pull)
+            echo "Pulling next image: $IMAGE"
+            docker pull "$IMAGE"
 
-            if echo "$OUTPUT" | grep -q "Downloaded newer image"; then
-              echo "New image found, deploying..."
-              $COMPOSE_CMD up -d --remove-orphans
-            else
-              echo "No changes, skipping restart."
-            fi
+            echo "Deploying next service..."
+            docker compose --env-file .env.vps -f docker-compose.vps.yml up -d --no-deps next
 
             echo "Cleaning up old images..."
             docker image prune -f

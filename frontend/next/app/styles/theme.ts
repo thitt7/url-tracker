@@ -31,7 +31,7 @@ export const getTheme = (mode: 'light' | 'dark') =>
       MuiButton: {
         styleOverrides: {
           root: {
-            borderRadius: 8,
+            borderRadius: 5,
             textTransform: 'none',
             fontWeight: 500,
             padding: '6px 16px',

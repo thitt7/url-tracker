@@ -2,26 +2,29 @@
   email {$CADDY_EMAIL}
 }
 
-staging.url-tracker.com {
-  encode gzip
-
-  # Route API traffic to the .NET container (ports from .env.vps: DOTNET_PORT, NEXT_SERVER_PORT).
-  handle /api/* {
-    reverse_proxy dotnet:{$DOTNET_PORT}
-  }
-
-  # Everything else goes to Next.js.
-  reverse_proxy next:{$NEXT_SERVER_PORT}
-}
-
+# Primary domain
 url-tracker.com {
   encode gzip
 
-  # Route API traffic to the .NET container (ports from .env.vps: DOTNET_PORT, NEXT_SERVER_PORT).
   handle /api/* {
     reverse_proxy dotnet:{$DOTNET_PORT}
   }
 
-  # Everything else goes to Next.js.
   reverse_proxy next:{$NEXT_SERVER_PORT}
+}
+
+# Staging subdomain
+staging.url-tracker.com {
+  encode gzip
+
+  handle /api/* {
+    reverse_proxy dotnet:{$DOTNET_PORT}
+  }
+
+  reverse_proxy next:{$NEXT_SERVER_PORT}
+}
+
+# Redirect www → root
+www.url-tracker.com {
+  redir https://url-tracker.com{uri}
 }

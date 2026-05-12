@@ -55,33 +55,56 @@ a {
   }
 }
 
-/* Global MUI Styles */
-.MuiDataGrid-virtualScroller {
-  [role=rowgroup] {width: 100%;}
-}
-[class*=MuiDataGrid-columnHeaders] {display: none !important;}
+/* Link info DataGrid — three equal columns; avoid `width:100%` on every cell (creates a phantom extra lane) */
+.link-info-grid {
+  width: 100%;
 
-.MuiDataGrid-row {
-  width: 100% !important;
+  .MuiDataGrid-root {
+    width: 100%;
+  }
 
-  > div:nth-child(3) {display: none;}
+  .MuiDataGrid-main {
+    width: 100%;
+  }
 
-  [class*=MuiDataGrid-cell] {
+  .MuiDataGrid-virtualScroller {
+    width: 100%;
+
+    [role=rowgroup] {width: 100%;}
+  }
+
+  .MuiDataGrid-virtualScrollerContent {
     width: 100% !important;
-    max-width: initial !important;
+    min-width: 100% !important;
+  }
 
-    &:first-of-type {
-      @media (min-width: $tablet) {
-        min-width: 200px !important;
-      }    
-      width: 200px !important;
+  [class*=MuiDataGrid-columnHeaders] {display: none !important;}
 
-      [class*=cellContent] {font-weight: bold;}
+  .MuiDataGrid-row {
+    width: 100% !important;
+    max-width: 100%;
+    display: flex !important;
+
+    > [class*=MuiDataGrid-cell] {
+      flex: 1 1 0 !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      box-sizing: border-box;
+
+      [class*=cellContent] {
+        width: 100%;
+        min-width: 0;
+      }
+
+      &:nth-of-type(2) [class*=cellContent] {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      &:first-of-type [class*=cellContent] {
+        font-weight: bold;
+      }
     }
-
-    [class*=cellContent] {width: initial !important;}
-  
-    &:nth-of-type(n+3) {display: none;}
   }
 }
 

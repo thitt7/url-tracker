@@ -1,17 +1,19 @@
 @use 'variables' as *;
 
-
 .container {
     height: 100%;
     width: 100%;
-    display: flex;
-    flex-flow: column;
     max-width: 1300px;
     margin: auto;
-    padding: 25px;
 
-    .link {
-        padding: 10px;
+    .pageHero {
+        margin: 0;
+    }
+
+    .link,
+    .logs {
+        display: flex;
+        flex-direction: column;
 
         .table {
             box-sizing: border-box;
@@ -30,9 +32,7 @@
         }
     }
 
-    .logs {
-        padding: 10px;
-
+    .visitLogTable {
         th {
             font: bold 1rem/1 $font-primary;
             text-align: center;

@@ -7,7 +7,7 @@ import styles from '@styles/tracking.module.scss';
 
 const VisitLogTable = ({ logs }: { logs: VisitLogDto[] }) => {
     return (
-        <Table className={styles.logs} stickyHeader={true} aria-label="Visit Log Table">
+        <Table className={styles.visitLogTable} stickyHeader={true} aria-label="Visit Log Table">
             <TableHead>
                 <TableRow>
                     <TableCell>Time</TableCell>

@@ -1,10 +1,10 @@
 import { ImageResponse } from 'next/og'
-import { loadLogoDataUrl } from './loadLogoDataUrl'
+import { readLogoPngDataUrl } from './logoPng'
 
 const OG_SIZE = { width: 1200, height: 630 }
 
 export async function shareImageResponse() {
-    const logoSrc = await loadLogoDataUrl()
+    const logoSrc = await readLogoPngDataUrl()
     return new ImageResponse(
         (
             <div

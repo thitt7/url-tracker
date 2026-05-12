@@ -1,26 +1,15 @@
-import { ImageResponse } from 'next/og'
-import { loadLogoDataUrl } from './lib/loadLogoDataUrl'
+import { LOGO_PNG_SIZE, readLogoPng } from './lib/logoPng'
 
-export const size = { width: 180, height: 180 }
+export const size = LOGO_PNG_SIZE
 export const contentType = 'image/png'
 
+/** Same source file as tab icon; original encoding keeps transparency for touch icons. */
 export default async function AppleIcon() {
-    const logoSrc = await loadLogoDataUrl()
-    return new ImageResponse(
-        (
-            <div
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: '#ffffff',
-                }}
-            >
-                <img src={logoSrc} width={168} height={168} style={{ objectFit: 'contain' }} />
-            </div>
-        ),
-        { ...size },
-    )
+    const body = await readLogoPng()
+    return new Response(new Blob([new Uint8Array(body)], { type: 'image/png' }), {
+        headers: {
+            'Content-Type': 'image/png',
+            'Cache-Control': 'public, max-age=31536000, immutable',
+        },
+    })
 }

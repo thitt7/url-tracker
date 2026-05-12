@@ -1,6 +1,6 @@
 import { UpdateUrlDto } from '@Types/DTO'
 
-async function updateUrl(updateUrl: UpdateUrlDto, id: string, docker: boolean) {
+async function updateUrl(updateUrl: UpdateUrlDto, id: string) {
     let URL: string = `${process.env.NEXT_PUBLIC_API_URL}/api/urls/${id}`;
 
     let res

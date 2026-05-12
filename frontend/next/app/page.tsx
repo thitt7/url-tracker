@@ -6,8 +6,6 @@ import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 
 export default function Home() {
-    // const IS_DOCKER = process.env.DOCKER_ENV === 'true';
-    // const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     return (
         <main>

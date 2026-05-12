@@ -15,6 +15,7 @@ import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
+import Tooltip from '@mui/material/Tooltip'
 import CircularProgress from '@mui/material/CircularProgress'
 import { UrlDto, UpdateUrlDto } from '@Types/DTO'
 import '@styles/globals.scss'
@@ -26,7 +27,7 @@ const ROW_IDS = {
     createdAt: 'CreatedAt',
 } as const
 
-const LinkInfoTable = ({ url, docker }: { url: UrlDto; docker: boolean }) => {
+const LinkInfoTable = ({ url }: { url: UrlDto }) => {
     const apiRef = useGridApiRef()
     const trackingIdRef = useRef(url.trackingId)
     useEffect(() => {
@@ -84,15 +85,15 @@ const LinkInfoTable = ({ url, docker }: { url: UrlDto; docker: boolean }) => {
             field: 'name',
             headerName: 'name',
             hideSortIcons: true,
+            flex: 1,
             minWidth: 0,
-            maxWidth: 0,
         },
         {
             field: 'value',
             headerName: 'value',
             hideSortIcons: true,
-            minWidth: 0,
             flex: 1,
+            minWidth: 0,
             editable: true,
             renderCell: (params) => {
                 if (savingRowId === params.row.id) {
@@ -119,70 +120,89 @@ const LinkInfoTable = ({ url, docker }: { url: UrlDto; docker: boolean }) => {
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
-            width: 108,
-            align: 'right',
-            headerAlign: 'right',
+            flex: 1,
+            minWidth: 0,
+            align: 'left',
+            headerAlign: 'left',
+            renderHeader: () => null,
             renderCell: (params) => {
                 const rowId = params.row.id as string
                 const value = params.row.value as string
                 const busy = savingRowId !== null
 
+                const actionBtn = (
+                    tooltip: string,
+                    aria: string,
+                    icon: React.ReactNode,
+                    onClick: () => void,
+                ) => (
+                    <Tooltip title={tooltip} enterDelay={400}>
+                        <span>
+                            <IconButton
+                                size="small"
+                                aria-label={aria}
+                                disabled={busy}
+                                onClick={onClick}
+                            >
+                                {icon}
+                            </IconButton>
+                        </span>
+                    </Tooltip>
+                )
+
+                const actionsBox = (children: React.ReactNode) => (
+                    <Box
+                        sx={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-start',
+                            gap: 0.25,
+                            flexWrap: 'nowrap',
+                            width: '100%',
+                            minHeight: 36,
+                        }}
+                    >
+                        {children}
+                    </Box>
+                )
+
                 if (rowId === ROW_IDS.originalURL) {
-                    return (
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 0.25 }}>
-                            <IconButton
-                                size="small"
-                                aria-label="Edit original URL"
-                                disabled={busy}
-                                onClick={() => startEditValue(rowId)}
-                            >
-                                <EditIcon fontSize="small" />
-                            </IconButton>
-                            <IconButton
-                                size="small"
-                                aria-label="Copy original URL"
-                                disabled={busy}
-                                onClick={() => copyValue(value)}
-                            >
-                                <ContentCopyIcon fontSize="small" />
-                            </IconButton>
-                        </Box>
+                    return actionsBox(
+                        <>
+                            {actionBtn('Copy', 'Copy original URL', <ContentCopyIcon fontSize="small" />, () =>
+                                copyValue(value),
+                            )}
+                            {actionBtn('Edit', 'Edit original URL', <EditIcon fontSize="small" />, () =>
+                                startEditValue(rowId),
+                            )}
+                        </>,
                     )
                 }
                 if (rowId === ROW_IDS.trackingUrl) {
-                    return (
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <IconButton
-                                size="small"
-                                aria-label="Copy tracking URL"
-                                disabled={busy}
-                                onClick={() => copyValue(value)}
-                            >
-                                <ContentCopyIcon fontSize="small" />
-                            </IconButton>
-                        </Box>
+                    return actionsBox(
+                        <>
+                            {actionBtn(
+                                'Copy',
+                                'Copy tracking URL',
+                                <ContentCopyIcon fontSize="small" />,
+                                () => copyValue(value),
+                            )}
+                        </>,
                     )
                 }
                 if (rowId === ROW_IDS.trackingId) {
-                    return (
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 0.25 }}>
-                            <IconButton
-                                size="small"
-                                aria-label="Edit tracking ID"
-                                disabled={busy}
-                                onClick={() => startEditValue(rowId)}
-                            >
-                                <EditIcon fontSize="small" />
-                            </IconButton>
-                            <IconButton
-                                size="small"
-                                aria-label="Copy tracking ID"
-                                disabled={busy}
-                                onClick={() => copyValue(value)}
-                            >
-                                <ContentCopyIcon fontSize="small" />
-                            </IconButton>
-                        </Box>
+                    return actionsBox(
+                        <>
+                            {actionBtn(
+                                'Copy',
+                                'Copy tracking ID',
+                                <ContentCopyIcon fontSize="small" />,
+                                () => copyValue(value),
+                            )}
+                            {actionBtn('Edit', 'Edit tracking ID', <EditIcon fontSize="small" />, () =>
+                                startEditValue(rowId),
+                            )}
+                        </>,
                     )
                 }
                 return null
@@ -222,7 +242,7 @@ const LinkInfoTable = ({ url, docker }: { url: UrlDto; docker: boolean }) => {
         if (JSON.stringify(oldRow) !== JSON.stringify(newRow)) {
             setSavingRowId(id)
             try {
-                const res = await updateUrl(updatedUrl, trackingIdRef.current, docker)
+                const res = await updateUrl(updatedUrl, trackingIdRef.current)
 
                 if (res?.ok) {
                     if (id === ROW_IDS.trackingId) {
@@ -277,6 +297,7 @@ const LinkInfoTable = ({ url, docker }: { url: UrlDto; docker: boolean }) => {
     return (
         <div>
             <DataGrid
+                className="link-info-grid"
                 apiRef={apiRef}
                 rows={rows}
                 columns={columns}
@@ -285,6 +306,8 @@ const LinkInfoTable = ({ url, docker }: { url: UrlDto; docker: boolean }) => {
                 hideFooter={true}
                 editMode="cell"
                 processRowUpdate={processRowUpdate}
+                disableColumnMenu
+                sx={{ width: '100%', border: 'none' }}
             />
 
             <Snackbar

@@ -2,6 +2,7 @@ import { createTheme } from '@mui/material/styles'
 
 export const getTheme = (mode: 'light' | 'dark') =>
   createTheme({
+    spacing: 10,
     palette: {
       mode,
       primary: {
@@ -21,10 +22,21 @@ export const getTheme = (mode: 'light' | 'dark') =>
         fontWeight: 500,
       },
       h2: {
-        fontWeight: 400,
+        fontWeight: 600,
+        fontSize: '2.5rem',
+        lineHeight: 1.2,
+        letterSpacing: '-0.02em',
       },
       h3: {
         fontWeight: 400,
+      },
+      h4: {
+        fontWeight: 600,
+        fontSize: '1.6rem',
+        lineHeight: 1.25,
+      },
+      body1: {
+        lineHeight: 1.55,
       },
     },
     components: {

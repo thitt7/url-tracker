@@ -1,26 +1,15 @@
-import { ImageResponse } from 'next/og'
-import { loadLogoDataUrl } from './lib/loadLogoDataUrl'
+import { LOGO_PNG_SIZE, readLogoPng } from './lib/logoPng'
 
-export const size = { width: 32, height: 32 }
+export const size = LOGO_PNG_SIZE
 export const contentType = 'image/png'
 
+/** Serves the logo PNG as-is so alpha is not flattened by ImageResponse / Satori. */
 export default async function Icon() {
-    const logoSrc = await loadLogoDataUrl()
-    return new ImageResponse(
-        (
-            <div
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: '#ffffff',
-                }}
-            >
-                <img src={logoSrc} width={28} height={28} style={{ objectFit: 'contain' }} />
-            </div>
-        ),
-        { ...size },
-    )
+    const body = await readLogoPng()
+    return new Response(new Blob([new Uint8Array(body)], { type: 'image/png' }), {
+        headers: {
+            'Content-Type': 'image/png',
+            'Cache-Control': 'public, max-age=31536000, immutable',
+        },
+    })
 }

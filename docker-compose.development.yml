@@ -1,9 +1,9 @@
 services:
   mysql:
-    image: mysql:latest
-    container_name: ${DB_CONTAINER_NAME}
+    image: mysql:8.4
+    # container_name: ${DB_CONTAINER_NAME}
     environment:
-      MYSQL_ROOT_USER: ${MYSQL_ROOT_USER}
+      MYSQL_ROOT_USER: ${MYSQL_ROOT_USER
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:

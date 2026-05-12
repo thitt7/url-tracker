@@ -12,13 +12,31 @@ const spaceGrotesk = Space_Grotesk({
     variable: '--font-space-grotesk',
 })
 
+const siteDescription = 'Generate, shorten, and track your own custom links!'
+
+function getMetadataBase(): URL {
+    const raw = process.env.NEXT_PUBLIC_DOMAIN
+    if (raw) {
+        const host = raw.replace(/^https?:\/\//, '').replace(/\/$/, '')
+        return new URL(`https://${host}`)
+    }
+    return new URL('http://localhost:4000')
+}
+
 export const metadata: Metadata = {
+    metadataBase: getMetadataBase(),
     title: 'URL Tracker',
-    description: 'Generate, shorten, and track your own custom links!',
-    icons: {
-        icon: '/logo.png',
-        shortcut: '/logo.png',
-        apple: '/logo.png',
+    description: siteDescription,
+    openGraph: {
+        title: 'URL Tracker',
+        description: siteDescription,
+        siteName: 'URL Tracker',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'URL Tracker',
+        description: siteDescription,
     },
 }
 

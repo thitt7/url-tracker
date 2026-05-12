@@ -64,7 +64,7 @@ jobs:
             cd /url-tracker
 
             # Re-declare for reliability inside SSH
-            COMPOSE_CMD="docker compose -p url-tracker-production --env-file .env.staging -f docker-compose.production.yml"
+            COMPOSE_CMD="docker compose -p url-tracker-production --env-file .env.production -f docker-compose.production.yml"
 
             echo "Pulling next image: $IMAGE"
             docker pull "$IMAGE"

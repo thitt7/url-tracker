@@ -1,13 +1,6 @@
 const getUrl = async (id: string) => {
     const { NODE_ENV, BACKEND, DOTNET_PORT, NEXT_PUBLIC_API_URL } = process.env
 
-    console.log('ENV DEBUG:', {
-        NODE_ENV,
-        BACKEND,
-        DOTNET_PORT,
-        NEXT_PUBLIC_API_URL
-    })
-
     let url: string | null = null
 
     if (NODE_ENV === 'development') {
@@ -17,8 +10,6 @@ const getUrl = async (id: string) => {
         console.log('USING STAGING/PRODUCTION (public URL)')
         url = `${NEXT_PUBLIC_API_URL}/api/urls/${id}`
     }
-
-    console.log('FINAL URL:', url)
 
     if (!url) {
         console.error('Error fetching URL: missing API base configuration')

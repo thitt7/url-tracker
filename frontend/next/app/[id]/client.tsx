@@ -1,9 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { redirect } from 'next/navigation';
-import { Redirect } from './redirectAction';
-// import Redirect from './redirect';
 import asyncDelay from '@lib/asyncDelay';
 import getIpData from '@lib/getIpData';
 // import getIP from '@lib/getIP';

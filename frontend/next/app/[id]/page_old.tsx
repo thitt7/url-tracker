@@ -41,29 +41,6 @@ const OriginalUrl = async ({ params }: { params: Promise<{ id: string }> }) => {
   // const ip = await getIP();
   // const IpData = await getIpData(ip);
 
-  // const Log: VisitLogDto = {...IpData, createdAt: new Date().toISOString(), userAgent: userAgent, ipAddress: ip};
-
-  // const addVisitLog = async (log: VisitLogDto) => {
-  //   console.log('adding visit log...')
-  //   try {
-  //     let URL: string;
-  //     if (process.env.DOCKER_ENV && !process.env.KUBERNETES_SERVICE_HOST) {URL = `http://${process.env.BACKEND}:${process.env.DOTNET_PORT}/api/urls/visit/${trackingId}`}
-  //     else if (process.env.KUBERNETES_SERVICE_HOST !== undefined) {URL = `http://dotnet-clusterip:${process.env.DOTNET_PORT}/api/urls/visit/${trackingId}`}
-  //     else {URL = `https://api.${process.env.DOMAIN}/api/urls/visit/${trackingId}`}
-      
-  //     const res = await fetch(URL, {
-  //       method: 'PUT',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(Log)
-  //     })
-  //     res.json();
-  //   } catch (e) {
-  //     console.error('error adding visit log:', e)
-  //   }
-  // }
-
-  // addVisitLog(Log);
-
   return (
     <>
       <head>{parse(headHTML!)}</head>
